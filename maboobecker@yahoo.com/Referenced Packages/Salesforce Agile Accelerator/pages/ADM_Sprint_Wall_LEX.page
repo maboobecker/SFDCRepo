@@ -1,0 +1,21 @@
+<apex:page controller="agf.ADM_TeamSelectorController">
+    <apex:outputPanel id="multipleTeam" layout="none" rendered="{!currentTeamCount > 1}">
+        <c:ADM_TeamSelector destinationurl="/one/one.app#/n/ADM_Sprint_Wall_Beta" destinationlabel="Lightning Sprint Wall Beta" destinationparam="teamId"></c:ADM_TeamSelector>
+    </apex:outputPanel>
+    <apex:outputPanel id="singleTeam" layout="none" rendered="{!currentTeamCount == 1}">
+        <script type="text/javascript">
+            //remove this postMessage code after LEX sprint wall beta
+            if (window.location.search.indexOf('postMessage=true') != -1) {
+                parent.postMessage({'teamId': '{!allocations[0].Scrum_Team__c}'}, "*");
+            } else {
+                sforce.one.navigateToURL('/one/one.app#/n/ADM_Sprint_Wall_Beta?teamId={!allocations[0].Scrum_Team__c}');
+            }
+        </script>
+    </apex:outputPanel>
+
+    <apex:outputPanel layout="none" rendered="{!currentTeamCount == 0}">
+        <script type="text/javascript">
+            sforce.one.navigateToURL('/{!allSprintsLink}');
+        </script>
+    </apex:outputPanel>
+</apex:page>
