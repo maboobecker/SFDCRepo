@@ -1,0 +1,424 @@
+<apex:page controller="qualtrics.SurveyMessageController" id="surveyMessage" tabStyle="Qualtrics__tab"
+        showHeader="true" sidebar="false" standardStylesheets="false" action="{!init}" applyBodyTag="false" docType="html-5.0"> 
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <apex:stylesheet value="{!URLFOR($Resource.qualtrics__SLDS121, 'SLDS12.1/assets/styles/salesforce-lightning-design-system-vf.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.qualtrics__styles, 'styles/main.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.qualtrics__SLDS121, 'SLDS12.1/assets/icons/utility-sprite/svg/symbols.svg')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.qualtrics__qualtrics, 'qualtrics/public/lib/bootstrap-3.3.4/dist/css/bootstrap.min.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.qualtrics__qualtrics, 'qualtrics/public/lib/datetimepicker/css/bootstrap-datetimepicker.min.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.qualtrics__styles, 'styles/main.css')}"/>
+    </head>
+
+    <style>
+        body {
+            margin: 0; /* reset */    
+            /* mimics new standard layout negative space - set main .slds class content to white background */
+            background-color: rgb(244, 246, 249);
+        }
+        /* mimics new standard layout negative space - set main .slds class content to white background */
+        .slds {
+            background-color: #fff!important;
+            border-bottom: 1px solid #d8dde6;
+        }
+        html body.sfdcBody { /* fix for Aloha and Lightning Experience */
+            padding: 0!important;
+        }
+
+        #passwordSpan {
+            display: block;
+        }
+        #tokenSpan{
+            display: none;
+        }
+        .slds-page-header {
+            background: url("{!URLFOR($Resource.qualtrics__styles, 'styles/images/qualtrics-logo.png')}") top left no-repeat #f4f6f9!important;
+            padding: 127px 24px 12px!important;
+            border-top: 3px solid #B9131A;
+            min-height: 120px;
+            border-bottom: 0px!important;
+        }
+        label.slds-form-element__label {
+            min-width: 100px;
+            font-weight: bold;
+        }
+        #instruction {
+            margin-top: 2rem;
+        }
+        .slds-form-element__label--top {
+            text-align: left;
+        }
+        label.slds-checkbox {
+            margin-right: 30px;
+        }
+        .slds-col .slds-p-around--small {
+            padding-left: 0;
+        }
+        .slds .slds-button--small {
+            font-size: .75em!important;
+            min-height: 28px!important;
+            line-height: 25px!important;
+        }
+        #sendDateNow {
+            display:block;
+        }
+        #sendDatePicker {
+            display:none;
+        }
+        .qualtrics-green {
+          background-color: #04B26E !important;
+          border-color: #04B26E !important;
+        }
+        .qualtrics-red {
+          background-color: #D64541 !important;
+          border-color: #D64541 !important;
+        }
+        div.clearfix:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var app = app || {};
+    </script>
+    <apex:outputPanel id="jsvars">
+        <script type="text/javascript">
+            app.errorCount = 0;
+            app.validationCount = 0;
+            app.messageSent = {!messageSent};
+        </script>
+    </apex:outputPanel>
+    
+    <body>
+        <div class="slds">
+            <div class="slds-container slds-container--large slds-container--center">
+                <header class="slds-page-header">
+                  <div class="slds-grid">
+                    <div class="slds-col slds-has-flexi-truncate">
+                      <p class="slds-text-heading--label">Surveys for Salesforce</p>
+                      <div class="slds-grid">
+                        <div class="slds-grid slds-no-space">
+                          <h1 class="slds-text-heading--medium" title="Setup">Survey Wizard</h1>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </header>
+                <apex:form id="messageForm">
+                    <apex:actionFunction name="sendSurvey" action="{!save}" reRender="successPanel, progressBar, errorPanel, jsvars" oncomplete="app.toggleSurveyForm();"/>
+                    <apex:actionFunction name="selectSurvey" action="{!selectSurvey}" status="showStatus"/>
+                    <apex:actionFunction name="editSurvey" action="{!editSurvey}" status="showStatus"/>
+                    <apex:actionFunction name="editResponseMapping" action="{!editResponseMapping}" status="showStatus"/>
+
+                    <apex:actionStatus id="showStatus" rendered="{! ErrorList.size == 0}">
+                        <apex:facet name="start">
+                            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.5; z-index: 1000; background-color: #fff;">
+                            &nbsp;
+                            </div>
+                            <div class="slds-spinner--large" style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+                              <img src="{!URLFOR($Resource.SLDS121, 'SLDS12.1/assets/images/spinners/slds_spinner_brand.gif')}" alt="Loading..." />
+                            </div>
+                        </apex:facet>
+                    </apex:actionStatus>
+
+                    <div class="slds-tabs--default">
+                        <apex:outputPanel id="progressBar">
+                            <apex:outputPanel rendered="{!!messageSent && hasQualtricsAdminPermission}">
+                                <ul class="slds-tabs--default__nav" role="tablist">
+                                    <li class="slds-tabs__item slds-text-heading--label" title="Select Survey" role="presentation" id="tabSelectSurvey"><a href="#" onclick="selectSurvey();" role="tab" tabindex="0" aria-selected="false">1: Select Survey</a></li>
+                                    <li class="slds-tabs__item slds-text-heading--label" title="Edit Survey" id="tabEditSurvey"><a href="#" onclick="editSurvey();" role="tab" tabindex="-1" aria-selected="false">2: Edit Survey</a></li>
+                                    <li class="slds-tabs__item slds-text-heading--label" title="Edit Response Mapping" id="tabEditResponseMapping"><a href="#" onclick="editResponseMapping();" role="tab" tabindex="-1" aria-selected="false">3: Edit Response Mapping</a></li>
+                                    <li class="slds-tabs__item slds-text-heading--label slds-active" title="Send Email" id="tabSendEmail"><a href="#" role="tab" tabindex="-1" aria-selected="true">4: Send Email</a></li>
+                                </ul>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!messageSent && hasQualtricsAdminPermission}">
+                                <ul class="slds-tabs--default__nav" role="tablist">
+                                    <li class="slds-tabs__item slds-text-heading--label" title="Select Survey" role="presentation" id="tabSelectSurvey">1: Select Survey</li>
+                                    <li class="slds-tabs__item slds-text-heading--label" title="Edit Survey" id="tabEditSurvey">2: Edit Survey</li>
+                                    <li class="slds-tabs__item slds-text-heading--label" title="Edit Response Mapping" id="tabEditResponseMapping">3: Edit Response Mapping</li>
+                                    <li class="slds-tabs__item slds-text-heading--label slds-active" title="Send Email" id="tabSendEmail">4: Send Email</li>
+                                </ul>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!!messageSent && !hasQualtricsAdminPermission}">
+                                <ul class="slds-tabs--default__nav" role="tablist">
+                                    <li class="slds-tabs__item slds-text-heading--label" title="Select Survey" role="presentation" id="tabSelectSurvey"><a href="#" onclick="selectSurvey();" role="tab" tabindex="0" aria-selected="false">1: Select Survey</a></li>
+                                    <li class="slds-tabs__item slds-text-heading--label slds-active" title="Send Email" id="tabSendEmail"><a href="#" role="tab" tabindex="-1" aria-selected="true">2: Send Email</a></li>
+                                </ul>
+                            </apex:outputPanel>
+                            <!--
+                            <apex:outputPanel rendered="{!messageSent && !hasQualtricsAdminPermission}">
+                                <ul class="slds-tabs--default__nav" role="tablist">
+                                    <li class="slds-tabs__item slds-text-heading--label" title="Select Survey" role="presentation" id="tabSelectSurvey">1: Select Survey</li>
+                                    <li class="slds-tabs__item slds-text-heading--label slds-active" title="Send Email" id="tabSendEmail">2: Send Email</li>
+                                </ul>
+                                
+                            </apex:outputPanel>
+                            -->
+                        </apex:outputPanel>
+                        <apex:pageMessages />
+
+                        <apex:outputPanel id="errorPanel">
+                            <apex:outputPanel id="all">
+                                <apex:outputPanel id="errors">
+                                    <div class="alert alert-danger" role="alert" style="display:{!IF(ErrorList.size>0,'block','none')}">
+                                        <ul class="slds-p-around--small">
+                                            <apex:repeat value="{!ErrorList}" var="error" id="errorlist">
+                                                <li><apex:outputText value="{!error}"/></li>
+                                            </apex:repeat>
+                                        </ul>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+
+                            <apex:outputPanel id="validation">
+                                <apex:outputPanel id="validationOutput">
+                                    <div class="alert alert-danger" role="alert" style="display:{!IF(validationErrors.size>0,'block','none')}">
+                                        <ul>
+                                            <apex:repeat value="{!validationErrors}" var="error" id="validationError">
+                                                <li><apex:outputText value="{!error}"/></li>
+                                            </apex:repeat>
+                                        </ul>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        <section class="slds-tabs__content slds" role="tabpanel" id="tabContentSendEmail">
+                            <apex:outputPanel id="formData" rendered="{!!isComplete && errorList.size == 0}">
+                                <apex:outputPanel id="formPanel">
+                                    
+                                    <div class="slds-grid">
+                                    <apex:outputPanel styleClass="slds-col slds-size--1-of-2 slds-p-around--small" rendered="{!!messageSent && qualtricsSetting != null}">
+                                        <fieldset class="slds-form-element">
+                                            <span>
+                                                <legend class="slds-form-element__label slds-form-element__label--top">
+                                                    <h4 class="slds-text-heading--small slds-m-vertical--small">Would you like to send this survey?</h4>
+                                                </legend>
+                                                <div class="slds-form-element__control">
+                                                    <label class="slds-radio" for="sendNow" style="display: inline-block;">
+                                                        <input type="radio" name="dateSelectRadio" id="sendNow" value="now" onclick="app.toggleSendDate();" checked="true"/>
+                                                        <span class="slds-radio--faux"></span>
+                                                        <span class="slds-form-element__label">Send Now</span>
+                                                    </label>
+                                                    <label class="slds-radio" for="sendLater" style="display: inline-block;">
+                                                        <input type="radio" name="dateSelectRadio" id="sendLater" value="later" onclick="app.toggleSendDate();"/>
+                                                        <span class="slds-radio--faux"></span>
+                                                        <span class="slds-form-element__label">Send Later</span>
+                                                    </label>
+                                                </div>
+                                            </span>
+                                        </fieldset>
+                                        
+                                    </apex:outputPanel>
+
+
+                                    <apex:outputPanel styleClass="slds-col slds-size--1-of-2 slds-p-around--small" rendered="{!!messageSent && qualtricsSetting != null}">
+                                        <fieldset class="slds-form-element">
+                                            <span id="sendDateNow">
+                                                <legend class="slds-form-element__label slds-form-element__label--top">
+                                                    <h4 class="slds-text-heading--small slds-m-vertical--small">Send Now</h4>
+                                                </legend>
+                                                <div class="slds-form-element__control">
+                                                    <label for="sendNow" style="display: inline-block;">
+                                                        <span class="slds-form-element__label" style="height: 16px;">{!SendDate}</span>
+                                                    </label>
+                                                </div>
+                                            </span>
+                                            <span id="sendDatePicker">
+                                                <div class="bootstrap-namespace">
+                                                    <label for="inputSendDate" class="control-label">Send Later:</label>
+                                                    <div class='input-group date' id='datetimepicker' style="width:300px;">
+                                                        <apex:inputText styleClass="form-control" id="inputSendDate" value="{!SendDate}" html-placeholder="{!defaultDate}"/>
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                    </div>
+                                                </div>
+
+                                            </span>
+                                        </fieldset>
+                                        
+                                    </apex:outputPanel>
+
+                                    </div>
+                                    <div class="slds-grid">
+                                        <!-- left form fields -->
+                                        <apex:outputPanel styleClass="slds-col slds-size--1-of-2 slds-p-around--small" rendered="{!!messageSent && qualtricsSetting != null}">
+                                            <div class="slds-form-element slds-m-vertical--small">
+                                                <label class="slds-form-element__label" for="inputFromAddress">From Address:</label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:inputText styleClass="slds-input" id="inputFromAddress" html-placeholder="From Address"  value="{!SentFromAddress}" disabled="{!!hasQualtricsAdminPermission}" />
+                                                </div>
+                                            </div>
+                                            <div class="slds-form-element slds-m-vertical--small">
+                                                <label class="slds-form-element__label" for="inputReplyToEmail">Reply-To Email:</label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:inputText styleClass="slds-input" id="inputReplyToEmail" html-placeholder="Reply-To Email" value="{!FromEmail}" disabled="{!!hasQualtricsAdminPermission && !qualtricsSetting.qualtrics__Allow_From_Override__c}"/>
+                                                </div>
+                                            </div>
+                                            <div class="slds-form-element slds-m-vertical--small">
+                                                <label class="slds-form-element__label" for="messageSelect">Select a saved message:</label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-select_container">
+                                                        <apex:selectList id="messageSelect" value="{!messageChosen}" size="1" onchange="app.changeMessage()" styleClass="slds-select">
+                                                           <apex:selectOptions value="{!messageOptions}"/>
+                                                        </apex:selectList>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+
+                                        <!-- right form fields -->
+                                        <apex:outputPanel styleClass="slds-col slds-size--1-of-2 slds-p-around--small" rendered="{!!messageSent && qualtricsSetting != null}">
+                                            <div class="slds-form-element slds-m-vertical--small">
+                                                <label class="slds-form-element__label" for="inputFromName">From Name:</label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:inputText styleClass="slds-input" id="inputFromName" html-placeholder="From Name" value="{!FromName}" disabled="{!!hasQualtricsAdminPermission && !qualtricsSetting.qualtrics__Allow_From_Override__c}"/>
+                                                </div>
+                                            </div>
+                                            <div class="slds-form-element slds-m-vertical--small">
+                                                <label class="slds-form-element__label" for="inputSubject">Subject:</label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:inputText styleClass="slds-input" id="inputSubject" html-placeholder="Subject"  value="{!MessageSubject}" disabled="{!!hasQualtricsAdminPermission && !qualtricsSetting.qualtrics__Allow_Subject_Override__c}"/>
+                                                </div>
+                                            </div>
+                                            <apex:outputPanel styleClass="slds-form-element slds-m-vertical--small" rendered="{!hasQualtricsAdminPermission}">
+                                                <label class="slds-form-element__label" for="inputCustomMessageName">Save New Message As:</label>
+                                                <div class="slds-form-element__control">
+                                                    <apex:inputText styleClass="slds-input" id="inputCustomMessageName" html-placeholder="Enter Custom Message Name"  value="{!customMessageName}"/>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                        
+                                    </div>
+
+
+                                    <apex:outputPanel styleClass="slds-m-bottom--large" layout="block" id="messageEditor" rendered="{!!isComplete && errorList.size == 0}">
+                                        <apex:outputPanel styleClass="slds-form-element slds-m-vertical--small slds-box" layout="block" rendered="{!hasQualtricsAdminPermission}">
+                                            <apex:inputtextarea id="message" value="{!messageContent}" styleClass="CKeditor" richtext="false"/>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel styleClass="slds-form-element slds-m-vertical--small" layout="block" rendered="{!!hasQualtricsAdminPermission}">
+                                            <label for="messageView" class="slds-form-element__label">Message Preview:</label><br/>
+                                            <apex:outputLabel styleClass="slds-form-element__label" style="font-weight: normal;" id="messageView" escape="false" value="{!messageContent}"/> 
+                                        </apex:outputPanel>
+                                        <apex:inputtextarea id="messageContentHolder" value="{!messageContentHolder}" style="display:none;" richtext="false"/>
+                                    </apex:outputPanel>
+                                    <div class="clearfix">
+                                        <button type="button" value="Send Email" onClick="app.sendSurveyNotification()" class="slds-button slds-button--brand slds-button--small qualtrics-green slds-float--right">Send Email</button>
+                                        
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            <apex:outputPanel id="successPanel">
+                                <apex:outputPanel rendered="{!messageSent}">
+                                    <div class="slds-container--small slds-box slds-text-align--center" style="margin: 0 auto;">
+                                        <h2 class="slds-text-heading--large">Congratulations!</h2>  
+                                        <p class="slds-text-heading--small slds-m-vertical--small">Your survey has been sent.</p>
+                                        <p class="slds-text-body--default slds-m-vertical--small">Click the button below to view the survey record in Salesforce.</p>
+                                        <apex:outputPanel rendered="{}">
+                                            <div class="alert alert-info slds-p-vertical--medium" role="alert">It may take up to 10 minutes for the recipients of the survey to receive notifications.</div>
+                                        </apex:outputPanel>
+                                        <a class="slds-button slds-button--brand slds-button--small qualtrics-green slds-m-vertical--small" href="/{!survey.Id}" role="button">Go to Survey</a>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </section>
+                    </div>
+                </apex:form>
+            </div>
+        </div>
+    </body>
+    
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="//cdn.ckeditor.com/4.5.1/standard/ckeditor.js"></script>
+    <script src="//cdn.ckeditor.com/4.5.1/standard/adapters/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>-->
+    <apex:includeScript value="{!URLFOR($Resource.qualtrics__qualtrics, 'qualtrics/public/lib/jquery-2.1.3/jquery.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.qualtrics__qualtrics, 'qualtrics/public/lib/bootstrap-3.3.4/dist/js/bootstrap.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.qualtrics__qualtrics, 'qualtrics/public/lib/ckeditor/ckeditor.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.qualtrics__qualtrics, 'qualtrics/public/lib/ckeditor/adapters/jquery.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.qualtrics__qualtrics, 'qualtrics/public/lib/moment/moment.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.qualtrics__qualtrics, 'qualtrics/public/lib/datetimepicker/js/bootstrap-datetimepicker.min.js')}"/>
+    <script type="text/javascript">
+        var j$ = $.noConflict();
+        app.ckeditor = null;
+        app.messageId = '';
+        j$(document).ready(function(){
+            // initialize date picker
+            j$('#datetimepicker').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                sideBySide: true
+            });
+            // intialize ckeditor
+            if({!hasQualtricsAdminPermission}) {
+                j$('[id$=message]').ckeditor( function( textarea ) {
+                    app.ckeditor = CKEDITOR.instances[j$(textarea).attr('id')];
+                    //If Qualtrics User, set Read Only 
+                    //app.ckeditor.setReadOnly({!!hasQualtricsAdminPermission});
+                    // listen to changes in ckeditor
+                    app.ckeditor.on('blur', function(e) {
+                        if (e.editor.checkDirty()) {
+                            j$('[id$=messageSelect]').val('');
+                            j$('.customMessageNameDiv').show();
+                        }
+                    });
+                });
+            }
+        });
+        //surveyMessage:messageForm:message
+        app.sendSurveyNotification = function(){
+            if({!hasQualtricsAdminPermission}) {
+                j$('[id$=messageContentHolder]').val(app.ckeditor.getData());
+            }
+            else {
+                j$('[id$=messageContentHolder]').val(j$('[id$=messageView]').html());
+            }
+            sendSurvey();
+        };
+        app.changeMessage = function(){
+            app.messageId = j$('[id$=messageSelect]').val();
+
+            if(app.messageId != ''){
+                j$('.customMessageNameDiv').hide();
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.SurveyMessageController.changeMessage}',
+                    app.messageId,
+                    function(result, event){
+                        if({!hasQualtricsAdminPermission}) {
+                            app.ckeditor.setData(result);
+                        }
+                        else
+                        {
+                            j$('[id$=messageView]').html(result);
+                        }
+                    },
+                    {escape: false}
+                );
+            }
+            else {
+                j$('.customMessageNameDiv').show();
+            }
+        };
+        app.toggleSendDate = function(){
+            var radioValue = j$('input[name=dateSelectRadio]:checked').val();
+            if(radioValue == 'now'){
+                j$('#sendDatePicker').hide();
+                j$('#sendDateNow').show();
+            }
+            else if(radioValue == 'later') {
+                j$('#sendDateNow').hide();
+                j$('#sendDatePicker').show();
+            }
+            return false;
+        };
+        app.toggleSurveyForm = function(){
+            if(app.messageSent){
+                j$('[id$=formPanel]').hide();
+            }
+        }
+    </script>
+</html>
+</apex:page>

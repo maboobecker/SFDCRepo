@@ -1,0 +1,8 @@
+<apex:page standardController="qualtrics__Survey__c" extensions="qualtrics.QualtricsCanvasController" action="{!routeSurvey}">
+	<apex:pageMessages />
+	<apex:detail id="surveyDetail" subject="{!survey}" relatedList="true" title="true" rendered="{!showSurveyDetail}" inlineEdit="false"/>
+	<apex:outputPanel id="surveyCanvas" rendered="{!showCanvas}">
+		<div id="canvasAppContainer"></div>
+		<apex:canvasApp developerName="Qualtrics_Survey" containerId="canvasAppContainer" width="100%" parameters="{!requestParamJSON}"/>
+	</apex:outputPanel>
+</apex:page>

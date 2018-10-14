@@ -1,0 +1,23 @@
+<apex:page controller="SmartBarcode.BarCodeUsing39Ctr">
+   <apex:stylesheet value="{!URLFOR($Resource.SmartBarcode__barcodeCSS)}"/>  
+
+
+    <div style="display: inline-block; min-width: 1in; padding: 0.25in 1in;" >
+        <div>
+        
+        <apex:repeat value="{!allBarData}" var="outer">
+            <apex:repeat value="{!outer}" var="bar">
+                <apex:outputText value="" styleClass="{!if(bar='1','blackbar','whitebar')}"  />
+            </apex:repeat>
+        </apex:repeat><br/><br/>
+        
+        <!--    <apex:repeat value="{!barCodeBars}" var="bar">
+                <apex:outputText value="" styleClass="{!if(bar='1','blackbar','whitebar')}"  />
+            </apex:repeat>   -->
+        </div>
+       
+       <apex:outputText >{!sourceCodeValue}</apex:outputText>
+       
+       
+    </div>
+</apex:page>

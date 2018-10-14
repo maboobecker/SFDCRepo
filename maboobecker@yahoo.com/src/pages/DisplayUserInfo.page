@@ -1,0 +1,7 @@
+<apex:page showHeader="false" title="DisplayImage" sidebar="false"> 
+  <apex:pageblock >
+  <apex:pageblockSection >
+  {!$User.FirstName}
+  </apex:pageblockSection>
+  </apex:pageblock>
+</apex:page>

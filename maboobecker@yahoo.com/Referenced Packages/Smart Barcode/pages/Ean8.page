@@ -1,0 +1,13 @@
+<apex:page controller="SmartBarcode.EAN8Encoding">
+  <apex:stylesheet value="{!URLFOR($Resource.SmartBarcode__barcodeCSS)}"/>  
+
+    <div style="display: inline-block; min-width: 1in; padding: 0.25in 1in;" >
+        <div>
+            <apex:repeat value="{!barCodeBars}" var="bar">
+                <apex:outputText value="" styleClass="{!if(bar='1','blackbar','whitebar')}" />
+            </apex:repeat>
+        </div>
+            <apex:outputText >{!sourceCodeValue}</apex:outputText>
+
+    </div>
+</apex:page>

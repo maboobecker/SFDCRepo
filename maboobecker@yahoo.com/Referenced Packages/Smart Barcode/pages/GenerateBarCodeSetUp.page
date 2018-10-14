@@ -1,0 +1,22 @@
+<apex:page sidebar="false">
+  <apex:slds />
+  <div style="width:100%">
+  <div class="slds-m-bottom--medium slds-notify slds-notify--toast" style="text-align:center;width:100% !important">Smart Barcode Set Up Guide</div><br/><br/>
+  <div class="slds-text-body--regular" style="margin-left:5%;margin-right:5%;">
+     - For adding the button on Record detail page, user just need to create a button on detail page and add on the page layout.
+     <br/><br/> URL which user need to add into the button : 
+      <b>&#123;!$Site.BaseUrl&#125;/apex/SmartBarcode__DynamicBarCode?conid=&#8220;&#123;!ObjectName.Id&#125;&#8221;</b>
+
+   </div>
+   <hr/>
+   <div class="slds-text-body--regular" style="margin-left:5%;margin-right:5%;"><br/>
+     - For adding the button on List view, user just need to create a button for list View and add on the page layout.
+     <br/><br/> Script which user need to add into the button : <br/><br/><b>
+&#123;!REQUIRESCRIPT("/soap/ajax/16.0/connection.js")} <br/>
+var records = &#123;!GETRECORDIDS($ObjectType.ObjectName)}; <br/>
+window.open('/apex/SmartBarcode__DynamicBarCode?conid='+records );</b>
+
+   </div>
+
+</div>
+</apex:page>

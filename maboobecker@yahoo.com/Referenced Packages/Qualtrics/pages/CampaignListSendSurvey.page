@@ -1,0 +1,402 @@
+<apex:page standardController="Campaign" recordSetVar="campaignRecords" extensions="qualtrics.SendSurveyButtonController,qualtrics.QualtricsPermissionExtension" tabStyle="Qualtrics__tab"
+        showHeader="true" sidebar="false" standardStylesheets="false" action="{!checkDeletedCheckboxFields}" applyBodyTag="false" docType="html-5.0"> 
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <apex:stylesheet value="{!URLFOR($Resource.qualtrics__SLDS121, 'SLDS12.1/assets/styles/salesforce-lightning-design-system-vf.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.qualtrics__styles, 'styles/main.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.qualtrics__SLDS121, 'SLDS12.1/assets/icons/utility-sprite/svg/symbols.svg')}" />
+
+    </head>
+
+    <style>
+        body {
+            margin: 0; /* reset */    
+            /* mimics new standard layout negative space - set main .slds class content to white background */
+            background-color: rgb(244, 246, 249);
+        }
+        /* mimics new standard layout negative space - set main .slds class content to white background */
+        .slds {
+            background-color: #fff!important;
+            border-bottom: 1px solid #d8dde6;
+        }
+        html body.sfdcBody { /* fix for Aloha and Lightning Experience */
+            padding: 0!important;
+        }
+
+        #passwordSpan {
+            display: block;
+        }
+        #tokenSpan{
+            display: none;
+        }
+        .slds-page-header {
+            background: url("{!URLFOR($Resource.qualtrics__styles, 'styles/images/qualtrics-logo.png')}") top left no-repeat #f4f6f9!important;
+            padding: 127px 24px 12px!important;
+            border-top: 3px solid #B9131A;
+            min-height: 120px;
+            border-bottom: 0px!important;
+        }
+        label.slds-form-element__label {
+            min-width: 100px;
+            font-weight: bold;
+        }
+        #instruction {
+            margin-top: 2rem;
+        }
+        .slds-form-element__label--top {
+            text-align: left;
+        }
+        label.slds-checkbox {
+            margin-right: 30px;
+        }
+        .slds-col .slds-p-around--small {
+            padding-left: 0;
+        }
+        .slds .slds-button--small {
+            font-size: .75em!important;
+            min-height: 28px!important;
+            line-height: 25px!important;
+        }
+        iframe[id*="canvas-outer"] {
+            min-height: 900px;
+        }
+        .waitingHolder {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            z-index: 1000; 
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        .waitingImage {
+            display: none;
+        }
+        .waitingDescription:after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 70px;
+            background-image: url({!URLFOR($Resource.qualtrics__SLDS121, 'SLDS12.1/assets/images/spinners/slds_spinner_brand.gif')});
+            background-size: contain;
+        }
+        .waitingDescription {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: 15% 50%;
+            text-indent: -99999px;
+        }
+        .slds-theme--warning {
+            background-color: #F3E350;
+        }
+        .slds-theme--warning .slds-text-heading--label {
+            color: white;
+        }
+        .qualtrics-green {
+          background-color: #04B26E !important;
+          border-color: #04B26E !important;
+        }
+        .qualtrics-red {
+          background-color: #D64541 !important;
+          border-color: #D64541 !important;
+        }
+        .qualtrics-disabled {
+            background: #e0e5ee!important;
+            border-color: transparent!important;
+            color: #fff!important;
+        }
+    </style>
+    <body>
+        <div class="slds">
+            <div class="slds-container slds-container--large slds-container--center">
+                <header class="slds-page-header">
+                  <div class="slds-grid">
+                    <div class="slds-col slds-has-flexi-truncate">
+                      <p class="slds-text-heading--label">Surveys for Salesforce</p>
+                      <div class="slds-grid">
+                        <div class="slds-grid slds-no-space">
+                          <h1 class="slds-text-heading--medium" title="Setup">Survey Wizard</h1>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </header>
+                <apex:form >
+                    <!-- ACTION FUNCTIONS -->
+                    <apex:actionFunction name="createPanel" action="{!createPanelFromCampaignList}" status="showStatus"  oncomplete="querySurveys();"/>
+                    <apex:actionFunction name="querySurveys" action="{!queryAllSurveys}" rerender="panelInfo, surveyList, errors, progressBar" status="showStatus"/>
+                    <apex:actionFunction name="selectSurvey" action="{!selectSurvey}" rerender="canvasPanels,errors,progressBar" status="showStatus"/>
+                    <apex:actionFunction name="editSurvey" action="{!editSurvey}" rerender="errors,canvasPanels,selectSurveyPanel,progressBar" status="showStatus"/>
+                    <apex:actionFunction name="editResponseMapping" action="{!editResponseMapping}" rerender="canvasPanels,errors,progressBar" status="showStatus"/>
+                    <apex:actionFunction name="sendNotification" action="{!sendNotification}" rerender="canvasPanels,errors,progressBar" status="showStatus"/>
+                    <!-- CONTENT -->
+                    <apex:actionStatus id="showStatus" rendered="{! ErrorList.size == 0}">
+                        <apex:facet name="start">
+                            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.5; z-index: 1000; background-color: #fff;">
+                            &nbsp;
+                            </div>
+                            <div class="slds-spinner--large" style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+                              <img src="{!URLFOR($Resource.SLDS121, 'SLDS12.1/assets/images/spinners/slds_spinner_brand.gif')}" alt="Loading..." />
+                            </div>
+                        </apex:facet>
+                    </apex:actionStatus>
+
+                    <div class="slds-tabs--default">
+                        <apex:outputPanel id="progressBar">
+                            <apex:outputPanel rendered="{!showSelectSurvey && panelCreated}">
+                                <ul class="slds-tabs--default__nav" role="tablist">
+                                    <li class="slds-tabs__item slds-text-heading--label slds-active" title="Select Survey" role="presentation" id="tabSelectSurvey"><a href="#" role="tab" tabindex="0" aria-selected="true">1: Select Survey</a></li>
+                                </ul>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showEditSurveyCanvas}">
+                                <ul class="slds-tabs--default__nav" role="tablist">
+                                    <li class="slds-tabs__item slds-text-heading--label" title="Select Survey" role="presentation" id="tabSelectSurvey"><a href="#" onclick="selectSurvey();" role="tab" tabindex="0" aria-selected="false">1: Select Survey</a></li>
+                                    <li class="slds-tabs__item slds-text-heading--label slds-active" title="Edit Survey" id="tabEditSurvey"><a href="#" role="tab" tabindex="-1" aria-selected="true">2: Edit Survey</a></li>
+                                </ul>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!showResponseMappingCanvas}">
+                                <ul class="slds-tabs--default__nav" role="tablist">
+                                    <li class="slds-tabs__item slds-text-heading--label" title="Select Survey" role="presentation" id="tabSelectSurvey"><a href="#" onclick="selectSurvey();" role="tab" tabindex="0" aria-selected="false">1: Select Survey</a></li>
+                                    <li class="slds-tabs__item slds-text-heading--label" title="Edit Survey" id="tabEditSurvey"><a href="#" onclick="editSurvey();" role="tab" tabindex="-1" aria-selected="false">2: Edit Survey</a></li>
+                                    <li class="slds-tabs__item slds-text-heading--label slds-active" title="Edit Response Mapping" id="tabEditResponseMapping"><a href="#" role="tab" tabindex="-1" aria-selected="true">3: Edit Response Mapping</a></li>
+                                </ul>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        <apex:outputPanel id="errors">
+                            <div class="slds-box" style="display:{!IF(ErrorList.size>0,'block','none')}">
+                                <ul>
+                                    <apex:repeat value="{!ErrorList}" var="error" id="errorlist">
+                                        <li>
+                                            <h3 class="slds-text-heading--label" style="color:red;">
+                                                <apex:outputText value="{!error}"/>
+                                            </h3>
+                                        </li>
+                                    </apex:repeat>
+                                </ul>
+                            </div>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel id="selectSurveyPanel" rendered="{!ErrorList.size == 0}">
+                            <section class="slds-tabs__content slds-show" role="tabpanel" id="tabContentSelectSurvey">
+                                <apex:outputPanel id="formDisplay" rendered="{!hasCredentials && showSelectSurvey}">
+                                    <apex:outputPanel id="panelInfo">
+                                        <apex:outputPanel id="panelInfoData" rendered="{!panelCreated && recordsSkipped >= 1}">
+                                            <div class="slds-box slds-theme--warning" style="display:block">
+                                                <ul>
+                                                    <li>
+                                                        <h3 class="slds-text-heading--label"><apex:outputText value="{0} recipient will not receive this survey because they don''t have an email address or have opted out of receiving this type of email communication." rendered="{!recordsSkipped = 1}">
+                                                            <apex:param value="{!recordsSkipped}"/>
+                                                        </apex:outputText></h3>
+                                                        <h3 class="slds-text-heading--label"><apex:outputText value="{0} recipients will not receive this survey because they don''t have email addresses or have opted out of receiving this type of email communication." rendered="{!recordsSkipped > 1}">
+                                                            <apex:param value="{!recordsSkipped}"/>
+                                                        </apex:outputText></h3>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                    
+                                    <apex:outputPanel id="surveyList" rendered="{!showSelectSurvey}">
+                                        <apex:outputPanel id="surveyListData" rendered="{!panelCreated}">
+                                            <div class="slds-m-vertical--small slds-clearfix">
+                                                <button class="slds-button slds-button--brand slds-button--small survey-button qualtrics-disabled" style="float: right;" disabled="true" onclick="editSurvey();return false;">{!IF(hasQualtricsAdminPermission,'Edit Survey','Select Message')}</button>
+                                            </div>
+                                            
+                                            <div class="slds-box">
+                                                <div class="slds-grid">
+                                                    <apex:outputPanel styleClass="slds-col slds-size--1-of-3" id="surveyQuickstart" rendered="{!hasQualtricsAdminPermission}">
+                                                        <h3 class="slds-text-heading--medium slds-nowrap">Select a quickstart survey:</h3>
+                                                        <ul class="slds-list--vertical slds-has-dividers--bottom-space slds-has-selection slds-p-around--small">
+                                                            <apex:repeat value="{!quickStartNames}" var="quickstart" id="quickstartTable">
+                                                                <li class="slds-list__item">
+                                                                    <div class="slds-media slds-tile">
+                                                                        <div class="slds-media__body">
+                                                                            <div class="slds-form-element__control">
+                                                                                <label class="slds-radio" for="survey_{!SUBSTITUTE(SUBSTITUTE(quickstart,' ','_'),'-','_')}">
+                                                                                    <input type="radio" name="surveys" id="survey_{!SUBSTITUTE(SUBSTITUTE(quickstart,' ','_'),'-','_')}" value="{!quickstart}" onclick="changeValue(this,'{!$Component.RadioButtonValue}');"/>
+                                                                                    <span class="slds-radio--faux"></span>
+                                                                                    <span class="slds-form-element__label">{!quickstart}</span>
+                                                                                    <a href="{!quickStartMap[quickstart]}" target="_blank" class="slds-button slds-button--brand slds-button--small qualtrics-green" style="float: right;">Preview</a>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </apex:repeat>
+                                                        </ul>
+                                                    </apex:outputPanel>
+                                                
+                                                    <div class="slds-col {!IF(hasQualtricsAdminPermission,'slds-size--1-of-3','slds-size--1-of-1')}">
+                                                        <h3 class="slds-text-heading--medium slds-nowrap">{!IF(hasQualtricsAdminPermission,'Or select from an existing survey:','Select from an existing survey:')}</h3>
+                                                        <ul class="slds-list--vertical slds-has-dividers--bottom-space slds-has-selection slds-p-around--small">
+                                                            <apex:repeat value="{!surveys}" var="surveyOption" id="surveyTable">
+                                                                <li class="slds-list__item">
+                                                                    <div class="slds-media slds-tile">
+                                                                        <div class="slds-media__body">
+                                                                            <div class="slds-form-element__control">
+                                                                                <label class="slds-radio" for="survey_{!surveyOption.SurveyID}" data-toggle="tooltip" data-delay="10" title="{!surveyOption.SurveyName}">
+                                                                                    <input type="radio" name="surveys" id="survey_{!surveyOption.SurveyID}" value="{!surveyOption.SurveyID}" onclick="changeValue(this,'{!$Component.RadioButtonValue}');"/>
+                                                                                    <span class="slds-radio--faux"></span>
+                                                                                    <span class="slds-form-element__label">{!IF(hasQualtricsAdminPermission && LEN(surveyOption.SurveyName) > 30, MID(surveyOption.SurveyName,0,30)+"... ", surveyOption.SurveyName) }</span>
+                                                                                    <a href="https://s.qualtrics.com/SE/?SID={!surveyOption.SurveyID}&Preview=Survey" class="slds-button slds-button--brand slds-button--small qualtrics-green" style="float: right;" target="_blank">Preview</a>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </apex:repeat>
+                                                        </ul>
+                                                        <apex:outputPanel rendered="{!surveys.size == 0}">
+                                                            <br/><p>You do not have any surveys in your Qualtrics account.</p>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                
+                                                    <apex:outputPanel styleClass="slds-col slds-size--1-of-3" id="surveyCustom" rendered="{!hasQualtricsAdminPermission}">
+                                                        <h3 class="slds-text-heading--medium slds-nowrap">Or create a new survey:</h3>
+                                                        <ul class="slds-list--vertical slds-has-dividers--bottom-space slds-has-selection slds-p-around--small">
+                                                            <li class="slds-list__item">
+                                                                <div class="slds-media slds-tile">
+                                                                    <div class="slds-media__body" style="min-height:28px;">
+                                                                        <div class="slds-form-element__control">
+                                                                            <label class="slds-radio" for="newSurvey">
+                                                                                <input type="radio" name="surveys" id="newSurvey" value="New Survey" onclick="changeValue(this,'{!$Component.RadioButtonValue}');"/>
+                                                                                <span class="slds-radio--faux"></span>
+                                                                                <span class="slds-form-element__label">New Blank Survey</span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="slds-m-vertical--small slds-clearfix">
+                                                <button class="slds-button slds-button--brand slds-button--small survey-button qualtrics-disabled" style="float: right;" disabled="true" onclick="editSurvey();return false;">{!IF(hasQualtricsAdminPermission,'Edit Survey','Select Message')}</button>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </section>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel id="canvasPanels">
+                            <apex:outputPanel id="canvasPanel" rendered="{!ErrorList.size == 0 && hasQualtricsAdminPermission}">
+                                <apex:outputPanel id="editSurveyCanvas" rendered="{!showEditSurveyCanvas}">
+                                    <div id="editSurveyCanvasContainer"></div>
+                                    <apex:canvasApp developerName="Qualtrics_Survey" containerId="editSurveyCanvasContainer" width="100%" parameters="{!requestParamJSON}" scrolling="auto" onCanvasAppLoad="app.loadCanvasListeners()"/>
+                                </apex:outputPanel>
+                                <apex:outputPanel id="editResponseMappingCanvas" rendered="{!showResponseMappingCanvas}">
+                                    <div id="editResponseMappingCanvasContainer"></div>
+                                    <apex:canvasApp developerName="Qualtrics_Survey" containerId="editResponseMappingCanvasContainer" width="100%" parameters="{!requestParamJSON}" scrolling="auto" onCanvasAppLoad="app.loadCanvasListeners()"/>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            <apex:outputPanel id="authCanvasPanel" rendered="{!ErrorList.size == 0 && !hasQualtricsAdminPermission && showAuthOnlyCanvas}">
+                                <apex:actionFunction action="{!moveForward}" name="gotoMessage"/>
+                                <div id="editSurveyCanvasContainer" width="0px" height="0px" ></div>
+                                <apex:canvasApp developerName="Qualtrics_Survey" containerId="editSurveyCanvasContainer" width="0px" height="0px" parameters="{!requestParamJSON}" scrolling="auto" onCanvasAppLoad="app.loadCanvasListeners();gotoMessage();" />
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        <apex:inputHidden value="{!selectedValue}" id="RadioButtonValue" />
+                    </div>
+                </apex:form>
+            
+                <c:QualtricsLoginForm rendered="{!NOT(hasCredentials)}" pageController="{!pageCont}" />
+            </div>
+        </div>
+    </body>
+    <!-- JS CODE -->
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
+    <apex:includeScript value="{!URLFOR($Resource.qualtrics__qualtrics, 'qualtrics/public/lib/jquery-2.1.3/jquery.min.js')}"/>
+   <script>
+        /* Canvas Contoller override */
+        (function(global) {
+          var module = function() {
+            function subscribe(event) {
+              Sfdc.canvas.parent.subscribe(event)
+            }
+            function unsubscribe(event) {
+              Sfdc.canvas.parent.unsubscribe(event)
+            }
+            function publish(event) {
+              Sfdc.canvas.parent.publish(event)
+            }
+            function resize(size, target) {
+              Sfdc.canvas.parent.resize(size, target)
+            }
+            return{subscribe:subscribe, unsubscribe:unsubscribe, publish:publish, resize:resize}
+          }();
+          global.Sfdc = global.Sfdc || {};
+          global.Sfdc.canvas = global.Sfdc.canvas || {};
+          global.Sfdc.canvas.controller = module
+        })(this);
+
+        var app = app || {};
+        app.canvasListenersActive = false;
+         
+        app.loadCanvasListeners = function(){
+            if(!app.canvasListenersActive){
+                console.info('Loading Canvas listeners');
+                Sfdc.canvas.controller.subscribe([
+                    {name : 'qualtrics.editMappings', onData : app.editMappingsHandler},
+                    {name : 'qualtrics.editSurvey', onData : app.editSurveyHandler},
+                    {name : 'qualtrics.cancelMappingsEdit', onData : app.cancelMappingsHandler},
+                    {name : 'qualtrics.backEditSurvey', onData : app.backEditHandler}
+                ]);
+                app.canvasListenersActive = true;
+            }
+            app.resizeIframe();
+        };
+        app.editMappingsHandler = function(data){
+            if(data.status == 'Completed'){
+                console.info('Edits to Response Mappings completed');
+                sendNotification();
+            }
+        };
+        app.editSurveyHandler = function(data){
+            if(data.status == 'Completed'){
+                console.info('Edits to Survey completed');
+                editResponseMapping();
+            }
+        };
+        app.cancelMappingsHandler = function(data){
+            if(data.status == 'Completed'){
+                console.info('Edits to Response Mappings cancelled');
+                editSurvey();
+            }
+        };
+        app.backEditHandler = function(data){
+            if(data.status == 'Completed'){
+                console.info('Back to Edit Survey');
+                selectSurvey();
+            }
+        };
+/*        app.resizeIframe = function(){
+            $('iframe').height((window.innerHeight - 250)+'px');
+        };
+*/
+        app.resizeIframe = function(){
+           //$('iframe[id*="canvas-outer"]').height(($('iframe[id*="canvas-inner"]').innerHeight - 250)+'px');
+        };
+
+        /* End Canvas code */
+        function changeValue(input, textid) {
+            document.getElementById(textid).value = input.value;
+            $('.survey-button').prop('disabled', false);
+            $('.survey-button').removeClass('qualtrics-disabled');
+            $('.survey-button').addClass('qualtrics-green');
+        }
+
+        $(document).ready(function(){
+           createPanel();
+        });
+    </script>
+    </html>
+</apex:page>

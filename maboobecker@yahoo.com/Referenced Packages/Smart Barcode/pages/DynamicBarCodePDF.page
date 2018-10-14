@@ -1,0 +1,24 @@
+<apex:page sidebar="false" controller="SmartBarcode.DynamicBarCodeCtr" renderAs="pdf">
+
+    <apex:form >     
+        <apex:pageBlock >
+            <apex:repeat value="{!BarcodeValue}" var="barCode">
+                <apex:outputPanel rendered="{!IF(format=='Code 128',true,false)}">
+                    <c:BarCode128 codeValue="{!barCode}"/>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(format=='Code 39',true,false)}">
+                    <c:BarCode39 codeValue="{!barCode}"/>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(format=='EAN 13',true,false)}">
+                    <c:EAN13barcode codeValue="{!barCode}"/>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!IF(format=='EAN 8',true,false)}">
+                    <c:EAN8barcode codeValue="{!barCode}"/>
+                </apex:outputPanel>
+                
+                <br/>
+            </apex:repeat>
+        </apex:pageBlock>
+    </apex:form>
+    
+</apex:page>

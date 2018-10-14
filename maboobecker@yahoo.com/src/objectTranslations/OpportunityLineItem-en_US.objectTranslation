@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Adventure Package</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Adventure Packages</value>
+    </caseValues>
+    <fields>
+        <label><!-- Explorer --></label>
+        <name>Explorer__c</name>
+        <relationshipLabel><!-- Adventure Package --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- FulfillmentId --></label>
+        <name>FulfillmentId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Fulfillment Created --></label>
+        <name>Fulfillment_Created__c</name>
+    </fields>
+    <fields>
+        <label><!-- Fulfillment State --></label>
+        <name>Fulfillment_State__c</name>
+        <picklistValues>
+            <masterLabel>Created</masterLabel>
+            <translation><!-- Created --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not Created</masterLabel>
+            <translation><!-- Not Created --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Needs Insurance --></label>
+        <name>Needs_Insurance__c</name>
+    </fields>
+    <fields>
+        <label><!-- Needs Waiver --></label>
+        <name>Needs_Waiver__c</name>
+    </fields>
+    <layouts>
+        <layout>Adventure Package Layout (Relaxation Gauntlet)</layout>
+        <sections>
+            <label><!-- Administrative Details --></label>
+            <section>Administrative Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+    </layouts>
+    <startsWith>Vowel</startsWith>
+</CustomObjectTranslation>

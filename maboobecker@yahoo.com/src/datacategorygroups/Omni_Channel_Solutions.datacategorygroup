@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataCategoryGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <dataCategory>
+        <dataCategory>
+            <dataCategory>
+                <label>GBDM Training</label>
+                <name>GBDM_Training</name>
+            </dataCategory>
+            <dataCategory>
+                <label>GBDM Resources</label>
+                <name>GBDM_Resources</name>
+            </dataCategory>
+            <dataCategory>
+                <label>GBDM Communications</label>
+                <name>GBDM_Communications</name>
+            </dataCategory>
+            <dataCategory>
+                <label>GBDM Reports</label>
+                <name>GBDM_Reports</name>
+            </dataCategory>
+            <label>Shared GBD CONTENT</label>
+            <name>Shared_GBD_CONTENT</name>
+        </dataCategory>
+        <label>All</label>
+        <name>All</name>
+    </dataCategory>
+    <description>For Omni-Channel Solutions.</description>
+    <label>Omni-Channel Solutions</label>
+    <objectUsage>
+        <object>KnowledgeArticleVersion</object>
+    </objectUsage>
+</DataCategoryGroup>

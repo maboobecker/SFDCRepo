@@ -1,0 +1,729 @@
+<apex:page controller="qualtrics.QualtricsSettingsController" showHeader="true" standardStylesheets="false" sidebar="true" tabStyle="Qualtrics__tab" applyBodyTag="false" docType="html-5.0">
+
+<html xmlns:xlink="http://www.w3.org/1999/xlink">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <apex:stylesheet value="{!URLFOR($Resource.qualtrics__SLDS121, 'SLDS12.1/assets/styles/salesforce-lightning-design-system-vf.css')}" />
+  <apex:stylesheet value="{!URLFOR($Resource.qualtrics__styles, 'styles/main.css')}" />
+  <apex:stylesheet value="{!URLFOR($Resource.qualtrics__SLDS121, 'SLDS12.1/assets/icons/utility-sprite/svg/symbols.svg')}" />
+</head>
+
+<style>
+  body {
+    margin: 0; /* reset */    
+    /* mimics new standard layout negative space - set main .slds class content to white background */
+    background-color: rgb(244, 246, 249);
+  }
+  /* mimics new standard layout negative space - set main .slds class content to white background */
+  .slds {
+    background-color: #fff!important;
+    border-bottom: 1px solid #d8dde6;
+  }
+  html body.sfdcBody { /* fix for Aloha and Lightning Experience */
+    padding: 0!important;
+  }
+
+  #passwordSpan {
+    display: block;
+  }
+  #tokenSpan{
+    display: none;
+  }
+  .slds-page-header {
+    background: url("{!URLFOR($Resource.qualtrics__styles, 'styles/images/qualtrics-logo.png')}") top left no-repeat!important;
+    padding: 127px 0 0 0!important;
+    border-top: 3px solid #B9131A;
+    background-color: transparent!important;
+    min-height: 120px;
+    border-bottom: 0px!important;
+  }
+  label.slds-form-element__label {
+    min-width: 100px;
+    font-weight: bold;
+  }
+  #instruction {
+    margin-top: 2rem;
+  }
+  .slds-form-element__label--top {
+    text-align: left;
+  }
+  label.slds-checkbox {
+    margin-right: 30px;
+  }
+  section.slds-box {
+    padding:15px 0 0 0!important;
+    overflow: hidden;
+  }
+  .slds-box--table {
+    overflow: scroll;
+  }
+  .slds .slds-section-title--divider {
+    margin: 0;
+  }
+  .slds .slds-radio [type="radio"] { 
+    width: 13px; 
+    height: 13px; 
+    overflow: visible; 
+    position: fixed; 
+  }
+  .qualtrics-green {
+    background-color: #04B26E !important;
+    border-color: #04B26E !important;
+  }
+  .qualtrics-red {
+    background-color: #D64541 !important;
+    border-color: #D64541 !important;
+    color: #FFFFFF !important;
+  }
+
+/*  -- overrides for enhanced list for SLDS --  */
+  .listViewport * 
+  /* anything living within this class gets this styling */
+  {
+    font:99%/1.5 "Salesforce Sans",Arial,sans-serif!important;
+  }
+  .homeTab .listViewport .subNav .linkBar, 
+  .homeTab .mComponent .cHeader, 
+  .homeTab .genericTable, 
+  .homeTab .bSubBlock, 
+  .homeTab .bPageBlock 
+  /* getting rid of the pageBlock styling from the list view */
+  {
+    border:0;
+    background-color: #fff;
+  }
+  .listViewport .topNav .filterLinks 
+  /* edit / delete / create new view links */
+  {
+    padding: 5px 0;
+    margin-left: 20px;
+  }
+  .listViewportWrapper .listViewport .topNav .pageTitleIcon 
+  /* removing the negative top margin from the icon next to the filter drop down */
+  {
+    margin-top: 2px;
+  }
+  .listViewport .x-grid3-header, .errorConsole .x-grid3-header {
+    background: #fff;
+  }
+  .subNav .linkBar .listButtons input.btn 
+  /* the refresh button  - same styling as slds-button */
+  {
+      position: relative;
+      display: inline-block;
+      padding: 0;
+      background: transparent;
+      background-clip: padding-box;
+      border: none;
+      border-radius: 0.25rem;
+      color: #0070d2;
+      font-size: inherit;
+      line-height: 2.125rem;
+      text-decoration: none;
+      -webkit-appearance: none;
+      white-space: normal;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-transition: color 0.05s linear,background-color 0.05s linear;
+      transition: color 0.05s linear,background-color 0.05s linear;
+
+      /* same styling as slds-button--neutral, without padding */
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid #d8dde6;
+      background-color: #fff;
+
+      /* icon stuff for the button */
+      background: url("{!URLFOR($Resource.qualtrics__SLDS121, '/SLDS12.1/assets/icons/utility/refresh_60.png')}");
+      background-size: 15px!important;
+        background-position: center;
+      background-repeat: no-repeat;
+      padding: 10px!important;
+      width: 25px;
+      height: 25px;
+  }
+  .subNav .linkBar .listButtons input.btn:hover 
+  /* giving the refresh button some SLDS button hover */
+  {
+    background-color:#f4f6f9!important;
+  }
+  select.title /* SLDS'n the filter drop down list */
+  {
+    background-color: white;
+      color: #16325c;
+      border: 1px solid #d8dde6;
+      border-radius: 4px;
+      width: 100%;
+      -webkit-transition: border 0.1s linear, background-color 0.1s linear;
+      transition: border 0.1s linear, background-color 0.1s linear;
+      height: 34px;
+      max-width: 250px;
+  }
+  .listViewportWrapper .listViewport .x-grid3-hd-row>td 
+  /* giving the header row some padding */
+  {
+    padding: 10px 0;
+    border: 0!important;
+    border-right: 0;
+    /* recreating the slds-text-heading--label styling */
+    font-size: 0.75rem;
+      line-height: 1.25;
+      text-transform: uppercase;
+      letter-spacing: .0625em;
+      color: #54698d;
+  }
+  .listViewport .x-grid3-row td, 
+  .listViewport .x-grid3-summary-row td, 
+  .listViewport .x-grid3-cell-text, 
+  .listViewport .x-grid3-hd-text, 
+  .listViewport .x-grid3-hd, 
+  .listViewport .x-grid3-row
+  /* adding some padding above and below the rows */
+  {
+    padding: 3px 0;
+  }
+  .x-grid3-row 
+  /* get rid of the left border on each row */
+  {
+    border-left: 0;
+  }
+  .listViewportWrapper .listViewport .listBody,
+  .listViewport .listBody 
+  /* get rid of the border and set the background to white */
+  {
+    background-color: #fff;
+    border: 0;
+  }
+  .listViewport 
+  /* the entire list view doesn't need a border */
+  {
+    border:0;
+  }
+  .x-grid3-hd-row td 
+  /* make sure the rows are clear of color */
+  {
+    background-color: transparent;
+  }
+/* specific column adjustments */
+
+  td.x-grid3-hd.x-grid3-cell.x-grid3-td-ACTION_COLUMN 
+  /* action - header */,
+  .x-grid3-td-ACTION_COLUMN 
+  {
+      width: 60px!important;
+  }
+
+  td.x-grid3-hd.x-grid3-cell.x-grid3-td-NAME 
+  /* Qualtrics Survey - header */,
+  .x-grid3-td-NAME 
+  /* Qualtrics Survey - cells */
+  {
+      width: 125px!important;
+  }
+  td.x-grid3-col.x-grid3-cell.x-grid3-td-00N61000003A3BM 
+  /* Survey Title - header */,
+  .x-grid3-td-00N61000003A3BM 
+  /* Survey Title - cells */
+  {
+      width: 150px!important;
+  }
+  td.x-grid3-hd.x-grid3-cell.x-grid3-td-00N61000003A3BJ 
+  /* # in List column - header */,
+  .x-grid3-td-00N61000003A3BJ 
+  /* # in List column - cells */
+  {
+      width: 60px!important;
+  }
+  td.x-grid3-hd.x-grid3-cell.x-grid3-td-00N61000003A3BK
+  /* Status - header */,
+  .x-grid3-td-00N61000003A3BK
+  /* Status - cells */
+  {
+      width: 90px!important;
+  }
+
+  /* some SLDS spinner styles */
+   .waitingSearchDiv .waitingHolder {
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        bottom: 0; 
+        z-index: 1000; 
+        background-color: rgba(255, 255, 255, 0.5) !important;
+        width: 100% !important;
+    }
+    .waitingImage {
+        display: none;
+    }
+    .waitingDescription:after {
+        content: '';
+        display: block;
+        width: 70px;
+        height: 70px;
+        background-image: url({!URLFOR($Resource.qualtrics__SLDS121, 'SLDS12.1/assets/images/spinners/slds_spinner_brand.gif')});
+        background-size: contain;
+    }
+    .waitingDescription {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: 20% 50%;
+        text-indent: -99999px;
+    }
+    .waitingSearchDivOpacity {
+        background-color: transparent !important; 
+    }
+       .custPopup{
+            background-color: white;
+            border-width: 2px;
+            border-style: solid;
+            border-color: #e23d28;
+            z-index: 9999;
+            left: 50%;
+            padding:10px;
+            position: absolute;
+            /* These are the 3 css properties you will need to change so the popup 
+            displays in the center of the screen. First set the width. Then set 
+            margin-left to negative half of what the width is. You can add 
+            the height property for a fixed size pop up if you want.*/
+            width: 500px;
+            margin-left: -250px;
+            top:100px;
+    }
+    .popupBackground{
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+    }
+</style>
+
+<body>
+  <!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
+  <apex:includeScript value="{!URLFOR($Resource.qualtrics__qualtrics, 'qualtrics/public/lib/jquery-2.1.3/jquery.min.js')}"/>
+  <script>
+    $(document).ready(function(){});
+
+    function setActivity(element,active) {
+      if(active) {
+        $(element).removeClass('slds-hide');
+            $(element).addClass('slds-show');
+        }
+        else {
+        $(element).removeClass('slds-show');
+            $(element).addClass('slds-hide');
+        }
+    }
+
+    function swapActivity(elementName,caller) {
+      el = document.getElementById(elementName);
+      if($(el).hasClass('slds-hide')) {
+        $(el).removeClass('slds-hide');
+            $(el).addClass('slds-show');
+            $(caller).children('img').eq(0).attr("src","{!URLFOR($Resource.qualtrics__SLDS121, '/SLDS12.1/assets/icons/utility/chevrondown_60.png')}")
+        }
+        else if($(el).hasClass('slds-show')) {
+        $(el).removeClass('slds-show');
+            $(el).addClass('slds-hide');
+            $(caller).children('img').eq(0).attr("src","{!URLFOR($Resource.qualtrics__SLDS121, '/SLDS12.1/assets/icons/utility/chevronright_60.png')}")
+        }
+    }
+
+      function setFocusOnLoad() {}
+
+      function changeValue(input, textid) {
+        if(input.type == 'checkbox') {
+          document.getElementById(textid).value = input.checked;
+        }
+        else {
+            document.getElementById(textid).value = input.value;
+        if(input.value == 'Custom') {
+          setActivity(document.getElementById('blankMsgType'),false);
+          setActivity(document.getElementById('customMsgType'),true);
+          setActivity(document.getElementById('userMsgType'),false);
+          setActivity(document.getElementById('orgMsgType'),false);
+        }
+        else if(input.value == 'RunningUser') {
+          setActivity(document.getElementById('blankMsgType'),false);
+          setActivity(document.getElementById('customMsgType'),false);
+          setActivity(document.getElementById('userMsgType'),true);
+          setActivity(document.getElementById('orgMsgType'),false);
+        }
+        else if(input.value == 'OrgWideDefault') {
+          setActivity(document.getElementById('blankMsgType'),false);
+          setActivity(document.getElementById('customMsgType'),false);
+          setActivity(document.getElementById('userMsgType'),false);
+          setActivity(document.getElementById('orgMsgType'),true);
+        }
+      }
+      }
+
+      function showHideModal(actionVal) {
+        if(actionVal) {
+          $('.slds-backdrop').addClass('slds-backdrop--open');
+          $('.slds-modal').addClass('slds-fade-in-open');
+        }
+        else {
+          $('.slds-backdrop').removeClass('slds-backdrop--open');
+          $('.slds-modal').removeClass('slds-fade-in-open');
+        }
+      }
+
+  </script>
+
+    <apex:outputPanel id="loginForm">
+        <c:QualtricsLoginForm rendered="{!NOT(hasCredentials)}" pageQController="{!pageCont}" />
+    </apex:outputPanel>
+  <div class="slds">
+    <apex:form >
+      <apex:outputPanel id="mainBlock" rendered="{!hasCredentials}">
+
+    <header class="slds-page-header intro  slds-m-bottom--large">
+       <apex:outputPanel rendered="{!hasQualtricsAdminPermission}" id="instruction" styleClass="slds-text-heading--small slds-m-bottom--medium">        
+        <span class="slds-text-heading--large">Configuration Settings</span><br/>
+      </apex:outputPanel>
+      <apex:outputPanel >
+        <h3 class="slds-text-heading--small">Logged into Qualtrics as {!qualtricsUserName} 
+        <small><a href="#" onclick="showHideModal(true);">(Disconnect)</a></small>
+        </h3>
+      </apex:outputPanel>
+    </header>
+    <apex:outputPanel rendered="{!hasQualtricsAdminPermission}">
+        <apex:outputPanel id="prefsMessages">
+          <apex:outputPanel id="messageErrors">
+              <div class="slds-box" style="display:{!IF(messageErrorList.size>0,'block','none')}">
+                  <ul>
+                      <apex:repeat value="{!messageErrorList}" var="error" id="messageErrorList">
+                          <li>
+                              <h3 class="slds-text-heading--label" style="color:red;">
+                                  <apex:outputText value="{!error}"/>
+                              </h3>
+                          </li>
+                      </apex:repeat>
+                  </ul>
+              </div>
+          </apex:outputPanel>
+          <apex:outputPanel id="messageMsgs">
+              <div class="slds-box" style="display:{!IF(messageMsgsList.size>0,'block','none')}">
+                  <ul>
+                      <apex:repeat value="{!messageMsgsList}" var="msg" id="messageMsgList">
+                          <li>
+                              <h3 class="slds-text-heading--label" style="color:green;">
+                                  <apex:outputText value="{!msg}"/>
+                              </h3>
+                          </li>
+                      </apex:repeat>
+                  </ul>
+              </div>
+          </apex:outputPanel>
+        </apex:outputPanel>
+        <section class="slds-container--medium slds-box slds-m-bottom--medium">
+        <h3 class="slds-section-title--divider slds-section-title section-group--is-open">
+          <div onclick="swapActivity('{!$Component.messageBlock}',this)">
+            <img src="{!URLFOR($Resource.SLDS121, '/SLDS12.1/assets/icons/utility/chevrondown_60.png')}" style="width: 18px; margin-top: -4px;" />
+            Default Message Settings
+          </div>
+        </h3>
+
+        <apex:outputPanel id="messageBlock" styleClass="slds-m-bottom--small slds-p-around--small slds-show">
+          <div id="" styleClass="slds-form--inline">
+            <apex:inputHidden value="{!qualtricsSetting.qualtrics__Default_Message_From_Type__c}" id="rbMessageFromType" />
+            <apex:inputHidden value="{!qualtricsSetting.qualtrics__Allow_From_Override__c}" id="chkMessageFromOverride" />
+            <apex:inputHidden value="{!qualtricsSetting.qualtrics__Allow_Subject_Override__c}" id="chkMessageSubjectOverride" />
+            <h4 class="slds-text-heading--small slds-m-vertical--small">From Name, Reply to Email</h4>
+            <div class="slds-grid slds-m-bottom--small slds-p-around--small">
+              <div class="slds-col slds-size--1-of-2">
+                <fieldset class="slds-form-element">
+                  <legend class="slds-form-element__label slds-form-element__label--top">Default Message From Type</legend>
+                  <div class="slds-form-element__control">
+                    <label class="slds-radio" for="customInfo">
+                      <input type="radio" name="options" id="customInfo" value="Custom" onclick="changeValue(this,'{!$Component.rbMessageFromType}');"/>
+                      <span class="slds-radio--faux"></span>
+                      <span class="slds-form-element__label">Use Custom Info</span>
+                    </label>
+                    <label class="slds-radio" for="userInfo">
+                      <input type="radio" name="options" id="userInfo" value="RunningUser" onclick="changeValue(this,'{!$Component.rbMessageFromType}');"/>
+                      <span class="slds-radio--faux"></span>
+                      <span class="slds-form-element__label">Use Running User Info</span>
+                    </label>
+                    <label class="slds-radio" for="orgInfo">
+                      <input type="radio" name="options" id="orgInfo" value="OrgWideDefault" onclick="changeValue(this,'{!$Component.rbMessageFromType}');"/>
+                      <span class="slds-radio--faux"></span>
+                      <span class="slds-form-element__label">Use Org Wide Default Info</span>
+                    </label>
+                  </div>
+                </fieldset>
+                <div class="slds-form-element slds-m-vertical--small">
+                  <label class="slds-checkbox" for="{!$Component.fromOverride}">
+                    <apex:inputCheckbox value="{!qualtricsSetting.qualtrics__Allow_From_Override__c}" id="fromOverride" />
+                    <span class="slds-checkbox--faux"></span>
+                    <span class="slds-form-element__label">Allow User to Override Message Settings</span>
+                  </label>
+                </div>
+                          </div>
+              <div class="slds-col slds-size--1-of-2">
+                <div id="blankMsgType" class="slds-hide">
+                  &nbsp;
+                </div>
+                <div id="customMsgType" styleClass="slds-hide">
+                  <div>
+                    <label class="slds-form-element__label" for="{!$Component.fromName}">From Name:</label>
+                    <apex:inputText styleClass="slds-input" id="fromName" value="{!qualtricsSetting.qualtrics__Default_From_Name__c}"/>
+                  </div>
+                  <div>
+                    <label class="slds-form-element__label" for="{!$Component.replyTo}">Reply-To Email:</label>
+                            <apex:inputText styleClass="slds-input" id="replyTo" value="{!qualtricsSetting.qualtrics__Default_Reply_To_Email__c}"/>
+                  </div>
+                </div>
+                <div id="userMsgType" styleClass="slds-hide">
+                  <div>
+                    <label class="slds-form-element__label">From Name:</label>
+                    <span class="slds-text-body--default">{!$User.FirstName} {!$User.LastName}</span>
+                  </div>
+                  <div>
+                    <label class="slds-form-element__label">Reply-To Email:</label>
+                    <span class="slds-text-body--default">{!$User.Email}</span>
+                  </div>
+                </div>
+                <div id="orgMsgType" styleClass="slds-hide">
+                  <div>
+                    <label class="slds-form-element__label" for="{!$Component.orgWideAddress}">Org Wide Address:</label>
+                            <apex:selectList styleClass="slds-select" id="orgWideAddress" value="{!qualtricsSetting.qualtrics__Default_Org_Wide_Email_Id__c}" multiselect="false" size="1">
+                              <apex:selectOptions value="{!orgWideEmails}"/>
+                            </apex:selectList>
+                  </div>
+                  <div>
+                    <a class="slds-form-element__label" href="/email-admin/owa/listOrgWideEmailAddress.apexp?retURL=%2Fui%2Fsetup%2FSetup%3Fsetupid%3DEmailAdmin&setupid=OrgWideEmailAddresses" target="_blank">(Setup)</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h4 class="slds-text-heading--small slds-m-vertical--small">Default Subject</h4>
+            <div class="slds-grid slds-m-bottom--small slds-p-around--small">
+              <div class="slds-col slds-size--1-of-2">
+                <div class="slds-form-element">
+                  <label class="slds-form-element__label" for="{!$Component.subjectLine}">Subject Line:</label>
+                  <div class="slds-form-element__control">
+                    <apex:inputText styleClass="slds-input" id="subjectLine" value="{!qualtricsSetting.qualtrics__Default_Subject__c}"/>
+                  </div>
+                </div>
+                <div class="slds-form-element slds-m-vertical--small">
+                  <label class="slds-checkbox" for="{!$Component.subjectOverride}">
+                    <apex:inputCheckbox value="{!qualtricsSetting.qualtrics__Allow_Subject_Override__c}" id="subjectOverride" />
+                    <span class="slds-checkbox--faux"></span>
+                    <span class="slds-form-element__label">Allow User to Override Subject</span>
+                  </label>
+                </div>
+
+              </div>
+            </div>
+            <div class="slds-container slds-text-align--right">
+              <apex:commandButton styleClass="slds-button slds-button--brand slds-right qualtrics-green" value="Save" action="{!savePrefs}" rerender="messageBlock,prefsMessages"/>
+              <apex:commandButton styleClass="slds-button slds-button--brand slds-right qualtrics-red" value="Cancel" action="{!cancelPrefs}" rerender="messageBlock,prefsMessages"/>
+            </div>
+            <script>
+              // from msg type radios //
+              var elMsgType=document.getElementById('{!$Component.rbMessageFromType}');
+              if(elMsgType.value == 'Custom') {
+                document.getElementById('customInfo').checked = true;
+                changeValue(document.getElementById('customInfo'),'{!$Component.rbMessageFromType}')
+              }
+              else if(elMsgType.value == 'RunningUser') {
+                document.getElementById('userInfo').checked = true;
+                changeValue(document.getElementById('userInfo'),'{!$Component.rbMessageFromType}')
+              }
+              else if(elMsgType.value == 'OrgWideDefault') {
+                document.getElementById('orgInfo').checked = true;
+                changeValue(document.getElementById('orgInfo'),'{!$Component.rbMessageFromType}')
+              }
+              else {
+                document.getElementById('customInfo').checked = false;
+                document.getElementById('userInfo').checked = false;
+                document.getElementById('orgInfo').checked = false;
+                setActivity(document.getElementById('blankMsgType'),true);
+                setActivity(document.getElementById('customMsgType'),false);
+                setActivity(document.getElementById('userMsgType'),false);
+                setActivity(document.getElementById('orgMsgType'),false);
+              }
+            </script>
+          </div>
+        </apex:outputPanel>
+      </section>
+
+      <apex:outputPanel id="optoutMessages">
+        <apex:outputPanel id="optoutErrors">
+            <div class="slds-box" style="display:{!IF(optoutErrorList.size>0,'block','none')}">
+                <ul>
+                    <apex:repeat value="{!optoutErrorList}" var="error" id="optoutErrorList">
+                        <li>
+                            <h3 class="slds-text-heading--label" style="color:red;">
+                                <apex:outputText value="{!error}"/>
+                            </h3>
+                        </li>
+                    </apex:repeat>
+                </ul>
+            </div>
+        </apex:outputPanel>
+        <apex:outputPanel id="optoutMsgs">
+            <div class="slds-box" style="display:{!IF(optoutMsgsList.size>0,'block','none')}">
+                <ul>
+                    <apex:repeat value="{!optoutMsgsList}" var="msg" id="optoutMsgList">
+                        <li>
+                            <h3 class="slds-text-heading--label" style="color:green;">
+                                <apex:outputText value="{!msg}"/>
+                            </h3>
+                        </li>
+                    </apex:repeat>
+                </ul>
+            </div>
+        </apex:outputPanel>
+      </apex:outputPanel>
+      <section class="slds-container--medium slds-box slds-m-bottom--medium">
+        <h3 class="slds-section-title--divider slds-section-title section-group--is-open">
+          <div onclick="swapActivity('{!$Component.settingsBlock}',this)">
+            <img src="{!URLFOR($Resource.SLDS121, '/SLDS12.1/assets/icons/utility/chevrondown_60.png')}" style="width: 18px; margin-top: -4px;" />
+            Email Opt-Out Settings
+          </div>
+        </h3>
+
+        <apex:outputPanel id="settingsBlock" styleClass="slds-m-bottom--small slds-p-around--small slds-show">
+          <div styleClass="slds-form--inline">
+            <h4 class="slds-text-heading--small slds-m-vertical--small">
+              Records will be filtered from receiving survey invitations based upon your selections here regardless of the sending users' field level security settings
+            </h4>
+            <div class="slds-m-bottom--small slds-p-around--small">
+              <apex:repeat value="{!qualtricsOptOuts}" var="sobj">
+                <fieldset class="slds-form-element">
+                  <legend class="slds-form-element__label slds-form-element__label--top">{!sobj}</legend>
+                  <div class="slds-form-element__control">
+                    <apex:repeat value="{!qualtricsOptOuts[sobj]}" var="field">
+                      <apex:inputHidden id="hdn_fieldCheckBox" value="{!field.selected}"/>
+                      <label class="slds-checkbox" for="{!$Component.fieldCheckBox}">
+                        <apex:inputCheckbox id="fieldCheckBox" disabled="{!field.readOnly}" onclick="changeValue(this,'{!$Component.hdn_fieldCheckBox}')"/>
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">{!field.fieldLabel}</span>
+                      </label>
+                      <script>
+                        if(document.getElementById('{!$Component.hdn_fieldCheckBox}').value == 'true') {
+                          document.getElementById('{!$Component.fieldCheckBox}').checked = true;
+                        }
+                        else {
+                          document.getElementById('{!$Component.fieldCheckBox}').checked = false; 
+                        }
+                      </script>
+                    </apex:repeat>
+                  </div>
+                </fieldset>
+              </apex:repeat>
+            </div>
+            <div class="slds-container slds-text-align--right">
+              <apex:commandButton styleClass="slds-button slds-button--brand slds-right qualtrics-green" value="Save" action="{!saveSettings}" rerender="settingsBlock,optoutMessages"/>
+              <apex:commandButton styleClass="slds-button slds-button--brand slds-right qualtrics-red" value="Cancel" action="{!cancelSettings}" rerender="settingsBlock,optoutMessages"/>
+            </div>
+          </div>
+        </apex:outputPanel>
+      </section>
+    </apex:outputPanel>
+    <div>
+      <apex:actionFunction name="disconnectQualtrics" immediate="true" action="{!disconnectQualtricsUser}" rerender="msgs"/>
+      <div aria-hidden="false" role="dialog" class="slds-modal">
+        <div id="disconnectModal" class="slds-modal__container">
+          <div class="slds-modal__header">
+            <h2 class="slds-text-heading--medium">Disconnect Qualtrics</h2>
+            <button class="slds-button slds-button--icon-inverse slds-modal__close">
+              <svg aria-hidden="true" class="slds-button__icon slds-button__icon--large">
+                <use xlink:href="{!URLFOR($Resource.SLDS121, '/SLDS12.1/assets/icons/action-sprite/svg/symbols.svg#close')}"></use>
+              </svg>
+              <span class="slds-assistive-text">Close</span>
+            </button>
+          </div>
+          <div class="slds-modal__content">
+            <div>
+              <p>You are about to disconnect your Qualtrics account. If you connect a new Qualtrics account you may see errors when accessing existing Surveys from this tab.</p>
+            </div>
+          </div>
+          <div class="slds-modal__footer">
+            <div class="slds-x-small-buttons--horizontal">
+              <button class="slds-button slds-button--neutral slds-button--brand qualtrics-green" onclick="disconnectQualtrics();return false;">I Understand</button>
+              <button class="slds-button slds-button--neutral qualtrics-red" onclick="showHideModal(false);">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slds-backdrop"></div>
+    </div>
+    </apex:outputPanel>
+  </apex:form>
+  <apex:outputPanel rendered="{!hasCredentials}">
+    <section class="slds-container--medium slds-box slds-m-bottom--medium">
+      <h3 class="slds-section-title--divider slds-section-title section-group--is-open">
+        <div onclick="swapActivity('{!$Component.surveysBlock}',this)">
+          <img src="{!URLFOR($Resource.SLDS121, '/SLDS12.1/assets/icons/utility/chevrondown_60.png')}" style="width: 18px; margin-top: -4px;" />
+          Surveys
+        </div>
+      </h3>
+      <apex:outputPanel id="surveysBlock" styleClass="slds-m-bottom--small slds-p-around--small slds-show">
+        <apex:enhancedList type="Survey__c" customizable="true" height="600" rowsPerPage="50" id="SurveyList" />
+      </apex:outputPanel>
+    </section>
+  </apex:outputPanel>
+  <apex:form >
+    <apex:outputPanel id="canvasPanel">
+      <apex:outputPanel id="authOnlyPanel" rendered="{!showAuthOnlyCanvas && hasCredentials}">
+        <apex:actionFunction name="finishLogin" action="{!hideAuthOnlyCanvas}" rerender="canvasPanel" />
+        <div id="authOnlyCanvasContainer" width="0px" height="0px" ></div>
+        <apex:canvasApp developerName="Qualtrics_Survey" containerId="authOnlyCanvasContainer" width="0px" height="0px" parameters="{!requestParamJSON}" scrolling="auto" onCanvasAppLoad="app.loadCanvasListeners();finishLogin();" />
+      </apex:outputPanel>
+    </apex:outputPanel>
+  </apex:form>
+  </div>
+
+</body>
+    <script>
+        /* Canvas Contoller override */
+        (function(global) {
+          var module = function() {
+            function subscribe(event) {
+              Sfdc.canvas.parent.subscribe(event)
+            }
+            function unsubscribe(event) {
+              Sfdc.canvas.parent.unsubscribe(event)
+            }
+            function publish(event) {
+              Sfdc.canvas.parent.publish(event)
+            }
+            function resize(size, target) {
+              Sfdc.canvas.parent.resize(size, target)
+            }
+            return{subscribe:subscribe, unsubscribe:unsubscribe, publish:publish, resize:resize}
+          }();
+          global.Sfdc = global.Sfdc || {};
+          global.Sfdc.canvas = global.Sfdc.canvas || {};
+          global.Sfdc.canvas.controller = module
+        })(this);
+
+        var app = app || {};
+        app.canvasListenersActive = false;
+         
+        app.loadCanvasListeners = function(){
+            app.resizeIframe();
+        };
+        app.resizeIframe = function(){
+        };
+
+        /* End Canvas code */
+    </script>
+</html>
+</apex:page>

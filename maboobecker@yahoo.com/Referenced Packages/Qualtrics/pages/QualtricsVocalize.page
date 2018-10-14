@@ -1,0 +1,252 @@
+<apex:page Controller="qualtrics.QualtricsVocalizeController" showHeader="true" sidebar="false" standardStylesheets="false" action="{!checkVocalizePermissions}" applyBodyTag="false" docType="html-5.0"> 
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <apex:stylesheet value="{!URLFOR($Resource.qualtrics__SLDS121, 'SLDS12.1/assets/styles/salesforce-lightning-design-system-vf.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.qualtrics__styles, 'styles/main.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.qualtrics__SLDS121, 'SLDS12.1/assets/icons/utility-sprite/svg/symbols.svg')}" />
+
+    </head>
+
+    <style>
+        body {
+            margin: 0; /* reset */    
+            /* mimics new standard layout negative space - set main .slds class content to white background */
+            background-color: rgb(244, 246, 249);
+        }
+        /* mimics new standard layout negative space - set main .slds class content to white background */
+        .slds {
+            background-color: #fff!important;
+           /* border-bottom: 1px solid #d8dde6; */
+        }
+        html body.sfdcBody { /* fix for Aloha and Lightning Experience */
+            padding: 0!important;
+        }
+
+        #passwordSpan {
+            display: block;
+        }
+        #tokenSpan{
+            display: none;
+        }
+        .slds-page-header {
+            background: url("{!URLFOR($Resource.qualtrics__styles, 'styles/images/vocalize-logo.png')}") 20px 15px no-repeat #f4f6f9!important;
+            padding: 24px 24px 12px!important;
+            border-top: 3px solid #B9131A;
+            min-height: 100px;
+            border-bottom: 0px!important;
+        }
+        label.slds-form-element__label {
+            min-width: 100px;
+            font-weight: bold;
+        }
+        #instruction {
+            margin-top: 2rem;
+        }
+        .slds-form-element__label--top {
+            text-align: left;
+        }
+        label.slds-checkbox {
+            margin-right: 30px;
+        }
+        .slds-col .slds-p-around--small {
+            padding-left: 0;
+        }
+        .slds .slds-button--small {
+            font-size: .75em!important;
+            min-height: 28px!important;
+            line-height: 24px!important;
+        }
+        iframe[id*="canvas-outer"] {
+            min-height: 900px;
+        }
+        .waitingHolder {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            z-index: 1000; 
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        .waitingImage {
+            display: none;
+        }
+        .waitingDescription:after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 70px;
+            background-image: url({!URLFOR($Resource.qualtrics__SLDS121, 'SLDS12.1/assets/images/spinners/slds_spinner_brand.gif')});
+            background-size: contain;
+        }
+        .waitingDescription {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: 15% 50%;
+            text-indent: -99999px;
+        }
+        .status-div {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            opacity: 0.5; 
+            z-index: 1000; 
+            background-color: #fff;        
+        }
+        .status-spinner-div {
+            position: fixed; 
+            left: 0; 
+            top: 0; 
+            bottom: 0; 
+            right: 0; 
+            z-index: 1001; 
+            margin: 15% 50%;
+        }
+    </style>
+    <body>
+        <div class="slds">
+            <div class="slds-container slds-container--large slds-container--center">
+                <apex:form >
+                    <!-- CONTENT -->
+                    <apex:actionStatus id="showStatus">
+                        <apex:facet name="start">
+                            <div class="status-div">
+                            &nbsp;
+                            </div>
+                            <div class="slds-spinner--large status-spinner-div">
+                              <img src="{!URLFOR($Resource.SLDS121, 'SLDS12.1/assets/images/spinners/slds_spinner_brand.gif')}" alt="Loading..." />
+                            </div>
+                        </apex:facet>
+                    </apex:actionStatus>
+
+                    <div class="slds-tabs--default">
+                        <!-- Vocalize Access: User - false, Org - false -->
+                        <apex:outputPanel id="selectSurveyPanel" rendered="{!hasCredentials && !userHasVocalizeAccess && !orgHasVocalizeAccess}">
+                            <section class="slds-tabs__content slds-show" id="contentVocalize">
+                                <apex:outputPanel id="formDisplay">
+                                    <div class="slds-box">
+                                        <h2 class="slds-text-heading--medium slds-p-vertical--medium slds-p-horizontal--small">
+                                            It looks like Qualtrics Vocalize is not enabled for your Organization.
+                                        </h2>
+                                        <p class="slds-p-around--small">
+                                            For Qualtrics Surveys, go to the  "Qualtrics Surveys" tab.
+                                        </p>
+                                        <p class="slds-p-around--small">
+                                            If you’re getting this message in error, contact your Salesforce or Qualtrics admin, or email <a href="mailto:support@qualtrics.com">support@qualtrics.com</a>.
+                                        </p>
+                                        <p class="slds-p-around--small">
+                                            To learn more about Qualtrics Vocalize, contact <a href="mailto:sales@qualtrics.com">sales@qualtrics.com</a>.
+                                        </p>
+                                        <div class="slds-grid">
+                                            <div class="slds-col slds-size--1-of-3 slds-p-around--small">
+                                                <h3 class="slds-text-heading--small slds-m-vertical--small">Powerful Survey Engine</h3>
+                                                <img src="{!URLFOR($Resource.styles, 'styles/images/vocalize-tech-cx-01.png')}" alt="Loading..." />
+                                            </div>
+                                            <div class="slds-col slds-size--1-of-3 slds-p-around--small">
+                                                <h3 class="slds-text-heading--small slds-m-vertical--small">Flexible Dashboards</h3>
+                                                <img src="{!URLFOR($Resource.styles, 'styles/images/vocalize-tech-cx-02.png')}" alt="Loading..." />
+                                            </div>
+                                            <div class="slds-col slds-size--1-of-3 slds-p-around--small">
+                                                <h3 class="slds-text-heading--small slds-m-vertical--small">Dynamic Case Management</h3>
+                                                <img src="{!URLFOR($Resource.styles, 'styles/images/vocalize-tech-cx-03.png')}" alt="Loading..." />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                            </section>
+                        </apex:outputPanel>
+                        <!-- Vocalize Access: User - false, Org - true -->
+                        <apex:outputPanel id="selectSurveyPanelOrg" rendered="{!hasCredentials && !userHasVocalizeAccess && orgHasVocalizeAccess}">
+                            <section class="slds-tabs__content slds-show" id="contentVocalize">
+                                <apex:outputPanel id="formDisplayOrg">
+                                    <div class="slds-box">
+                                         <h2 class="slds-text-heading--medium slds-p-vertical--medium slds-p-horizontal--small">
+                                            It looks like Qualtrics Vocalize is not enabled for your account, although others in your organization do have access.
+                                        </h2>
+                                        <p class="slds-p-around--small">
+                                            Contact your Qualtrics admin for access, or email <a href="mailto:support@qualtrics.com">support@qualtrics.com</a>.
+                                        </p>
+                                        <div class="slds-grid">
+                                            <div class="slds-col slds-size--1-of-3 slds-p-around--small">
+                                                <h3 class="slds-text-heading--small slds-m-vertical--small">Powerful Survey Engine</h3>
+                                                <img src="{!URLFOR($Resource.styles, 'styles/images/vocalize-tech-cx-01.png')}" alt="Loading..." />
+                                            </div>
+                                            <div class="slds-col slds-size--1-of-3 slds-p-around--small">
+                                                <h3 class="slds-text-heading--small slds-m-vertical--small">Flexible Dashboards</h3>
+                                                <img src="{!URLFOR($Resource.styles, 'styles/images/vocalize-tech-cx-02.png')}" alt="Loading..." />
+                                            </div>
+                                            <div class="slds-col slds-size--1-of-3 slds-p-around--small">
+                                                <h3 class="slds-text-heading--small slds-m-vertical--small">Dynamic Case Management</h3>
+                                                <img src="{!URLFOR($Resource.styles, 'styles/images/vocalize-tech-cx-03.png')}" alt="Loading..." />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                            </section>
+                        </apex:outputPanel>
+                        <!-- Vocalize Access: User - true -->
+                        <apex:outputPanel id="canvasPanels">
+                            <apex:outputPanel id="canvasPanel" rendered="{!hasCredentials && userHasVocalizeAccess}">
+                                <apex:outputPanel id="vocalizeCanvas">
+                                    <div id="vocalizeCanvasContainer"></div>
+                                    <apex:canvasApp developerName="Qualtrics_Survey" containerId="vocalizeCanvasContainer" width="100%" parameters="{!requestParamJSON}" scrolling="auto" onCanvasAppLoad="app.loadCanvasListeners()"/>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </div> 
+                </apex:form>
+            
+                <c:QualtricsLoginForm rendered="{!NOT(hasCredentials)}" pageVController="{!pageCont}" />
+            </div>
+        </div>
+    </body>
+    <!-- JS CODE -->
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
+    <apex:includeScript value="{!URLFOR($Resource.qualtrics__qualtrics, 'qualtrics/public/lib/jquery-2.1.3/jquery.min.js')}"/>
+    <script>
+        /* Canvas Contoller override */
+        (function(global) {
+          var module = function() {
+            function subscribe(event) {
+              Sfdc.canvas.parent.subscribe(event)
+            }
+            function unsubscribe(event) {
+              Sfdc.canvas.parent.unsubscribe(event)
+            }
+            function publish(event) {
+              Sfdc.canvas.parent.publish(event)
+            }
+            function resize(size, target) {
+              Sfdc.canvas.parent.resize(size, target)
+            }
+            return{subscribe:subscribe, unsubscribe:unsubscribe, publish:publish, resize:resize}
+          }();
+          global.Sfdc = global.Sfdc || {};
+          global.Sfdc.canvas = global.Sfdc.canvas || {};
+          global.Sfdc.canvas.controller = module
+        })(this);
+
+        var app = app || {};
+        app.canvasListenersActive = false;
+         
+        app.loadCanvasListeners = function(){
+            app.resizeIframe();
+        };
+        app.resizeIframe = function(){
+        };
+
+        /* End Canvas code */
+        $(document).ready(function(){
+
+        });
+    </script>
+    </html>
+</apex:page>

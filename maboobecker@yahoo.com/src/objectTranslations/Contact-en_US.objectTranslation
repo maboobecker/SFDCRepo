@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Explorer</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Explorers</value>
+    </caseValues>
+    <fields>
+        <help><!-- Status Field --></help>
+        <label><!-- Active --></label>
+        <name>Active__c</name>
+    </fields>
+    <fields>
+        <label><!-- Age --></label>
+        <name>Age__c</name>
+    </fields>
+    <fields>
+        <label><!-- Languages --></label>
+        <name>Languages__c</name>
+    </fields>
+    <fields>
+        <label><!-- Level --></label>
+        <name>Level__c</name>
+        <picklistValues>
+            <masterLabel>Primary</masterLabel>
+            <translation><!-- Primary --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Secondary</masterLabel>
+            <translation><!-- Secondary --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tertiary</masterLabel>
+            <translation><!-- Tertiary --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Loan Amount --></label>
+        <name>Loan_Amount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Location --></label>
+        <name>Location__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is automatically set from the related Default Payment Method&apos;s Payment Gateway. --></help>
+        <label><!-- Default Payment Gateway --></label>
+        <name>bt_stripe__Default_Payment_Gateway__c</name>
+        <relationshipLabel><!-- Contacts --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Latest payment method will be automatically populated, but can be updated. --></help>
+        <label><!-- Default Payment Method --></label>
+        <name>bt_stripe__Default_Payment_Method__c</name>
+        <relationshipLabel><!-- Contacts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Gender --></label>
+        <name>bt_stripe__Gender__c</name>
+        <picklistValues>
+            <masterLabel>Female</masterLabel>
+            <translation><!-- Female --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Male</masterLabel>
+            <translation><!-- Male --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Languages --></label>
+        <name>bt_stripe__Languages__c</name>
+    </fields>
+    <fields>
+        <label><!-- Level --></label>
+        <name>bt_stripe__Level__c</name>
+        <picklistValues>
+            <masterLabel>Primary</masterLabel>
+            <translation><!-- Primary --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Secondary</masterLabel>
+            <translation><!-- Secondary --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tertiary</masterLabel>
+            <translation><!-- Tertiary --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Maiden Name --></label>
+        <name>bt_stripe__Maiden_Name__c</name>
+    </fields>
+    <fields>
+        <help><!-- The government-issued ID number of the account representative, as appropriate for the representative’s country (e.g., a Social Security Number in the U.S. or a Social Insurance Number in Canada) --></help>
+        <label><!-- Personal ID Number --></label>
+        <name>bt_stripe__Personal_ID_Number_Encrypted__c</name>
+    </fields>
+    <fields>
+        <label><!-- Personal ID Type --></label>
+        <name>bt_stripe__Personal_ID_Type__c</name>
+        <picklistValues>
+            <masterLabel>Birth Certificate</masterLabel>
+            <translation><!-- Birth Certificate --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Driver License</masterLabel>
+            <translation><!-- Driver License --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Passport</masterLabel>
+            <translation><!-- Passport --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Permanent Resident Card</masterLabel>
+            <translation><!-- Permanent Resident Card --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- The last 4 digits of the Social Security Number of the account representative (U.S. only) --></help>
+        <label><!-- SSN Last 4 --></label>
+        <name>bt_stripe__SSN_Last_4_Encrypted__c</name>
+    </fields>
+    <fields>
+        <label><!-- Informed Consent Date --></label>
+        <name>qualtrics__Informed_Consent_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Informed Consent --></label>
+        <name>qualtrics__Informed_Consent__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Survey Invitation --></label>
+        <name>qualtrics__Last_Survey_Invitation__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last Survey Response --></label>
+        <name>qualtrics__Last_Survey_Response__c</name>
+    </fields>
+    <fields>
+        <label><!-- Net Promoter Score --></label>
+        <name>qualtrics__Net_Promoter_Score__c</name>
+    </fields>
+    <layouts>
+        <layout>Contact (Marketing) Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Contact Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label><!-- Google_Info --></label>
+        <name>Google_Info</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Blackthorn_Terminal --></label>
+        <name>bt_stripe__Blackthorn_Terminal</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Virtual_Terminal --></label>
+        <name>bt_stripe__Virtual_Terminal</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Send_Qualtrics_Survey --></label>
+        <name>qualtrics__Send_Qualtrics_Survey</name>
+    </webLinks>
+</CustomObjectTranslation>

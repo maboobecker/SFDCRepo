@@ -1,0 +1,241 @@
+<aura:component controller="CreateAppointmentController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <ltng:require styles="{!$Resource.FullCalenderJs     + '/fullcalendar.css'}"
+          scripts="{!join(',',
+                       $Resource.FullCalenderJs  + '/lib/jquery.min.js',
+                       $Resource.FullCalenderJs  + '/lib/moment.min.js',
+                       $Resource.FullCalenderJs  + '/fullcalendar.js'
+                      )}"
+          afterScriptsLoaded="{!c.afterScriptsLoaded}" />
+    <ltng:require styles="/resource/FullCalendar/FullCalendar/fullcalendar.css"/>
+    
+	<aura:attribute name="recordId" type="String" />
+    <aura:attribute name="classic" type="String" default="false"/>
+    <aura:attribute name="openEvent" type="boolean" default="false"/>
+    <aura:attribute name="confirmation" type="boolean" default="false"/>
+    
+    <aura:attribute name="events" type="Object[]" />
+    <aura:attribute name="appoinment" type="Event" default="{'sobjectType':'Event', 'StartDateTime':'', 'ENDDateTime' : '', 'Subject' : 'Appointment', 'WhoId' : ''}"/>
+    <aura:attribute name="startTime" type="string"/>
+    <aura:attribute name="endTime" type="string"/>
+    <aura:attribute name="eventDate" type="string"/>
+    <aura:attribute name="leadDetails" type="Lead" />
+    <div style="background-color: white;">
+        <article class="">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">			
+                    <div class="slds-media__body">
+                        <h2>
+                            
+                            <span class="slds-text-heading_small" style="font-weight:800;margin-top:15px">Create Appoinment</span>
+                            
+                        </h2>
+                    </div>	
+                </header>
+            </div>
+        </article>
+		<div class="slds-m-around_xxxx-small" style="padding-top: 0.5em;">
+			<div class="slds-box slds-m-around_small" style="overflow: hidden;">
+	            <article class="">
+	                <div class="slds-card__header slds-grid">
+	                    <header class="slds-media slds-media_center slds-has-flexi-truncate">			
+	                        <div class="slds-media__body">
+	                            <h2>
+	                                
+	                                <span class="slds-text-heading_small" style="font-weight:800;margin-top:15px">Customer Information</span>
+	                                
+	                            </h2>
+	                        </div>	
+	                    </header>
+	                </div>
+	            </article>
+                <div class="slds-grid slds-wrap"> 
+				
+					<div class="slds-col slds-large-size_1-of-2 slds-small-size_1-of-1">
+	                    <div class="slds-text-align_left slds-m-around_small">
+	                    	First Name: <ui:outputText value="{!v.leadDetails.FirstName}"/>
+						</div>
+	                </div> 
+                    <div class="slds-col slds-large-size_1-of-2 slds-small-size_1-of-1">
+	                    <div class="slds-text-align_left slds-m-around_small">
+	                    	Last Name: <ui:outputText value="{!v.leadDetails.LastName}"/>
+						</div>
+	                </div>
+                    <div class="slds-col slds-large-size_1-of-2 slds-small-size_1-of-1">
+	                    <div class="slds-text-align_left slds-m-around_small">
+	                    	Phone: <ui:outputText value="{!v.leadDetails.Phone}"/>
+						</div>
+	                </div>
+                    <div class="slds-col slds-large-size_1-of-2 slds-small-size_1-of-1">
+	                    <div class="slds-text-align_left slds-m-around_small">
+
+						</div>
+	                </div>
+                    <div class="slds-col slds-large-size_1-of-2 slds-small-size_1-of-1">
+                        <div class="slds-grid slds-wrap"> 
+                         <div class="slds-col slds-large-size_1-of-2 slds-small-size_1-of-2">
+                            <div class="slds-text-align_left slds-m-around_small">
+                                Street Address: <ui:outputText value="{!v.leadDetails.Street}"/>
+                            </div>
+                        </div>
+                         <div class="slds-col slds-large-size_1-of-2 slds-small-size_1-of-2">
+                            <div class="slds-text-align_left slds-m-around_small">
+                                City: <ui:outputText value="{!v.leadDetails.City}"/>
+                            </div>
+                        </div>
+                         <div class="slds-col slds-large-size_1-of-2 slds-small-size_1-of-2">
+                            <div class="slds-text-align_left slds-m-around_small">
+                                State: <ui:outputText value="{!v.leadDetails.State}"/>
+                            </div>
+                        </div>
+                         <div class="slds-col slds-large-size_1-of-2 slds-small-size_1-of-2">
+                            <div class="slds-text-align_left slds-m-around_small">
+                                Zipcode : <ui:outputText value="{!v.leadDetails.PostalCode}"/>
+                            </div>
+                        </div>
+                        </div>
+	                </div>
+                </div>
+            </div>
+            <div class="slds-box slds-m-around_small" style="overflow: hidden;">
+	            <article class="">
+	                <div class="slds-card__header slds-grid">
+	                    <header class="slds-media slds-media_center slds-has-flexi-truncate">			
+	                        <div class="slds-media__body">
+	                            <h2>
+	                                
+	                                <span class="slds-text-heading_small" style="font-weight:800;margin-top:15px">Lead Owner</span>
+	                                
+	                            </h2>
+	                        </div>	
+	                    </header>
+	                </div>
+	            </article>
+                <div class="slds-grid slds-wrap"> 
+				
+					<div class="slds-col slds-large-size_1-of-2 slds-small-size_1-of-1">
+	                    <div class="slds-text-align_left slds-m-around_small">
+	                    	First Name: <ui:outputText value="{!v.leadDetails.Owner.FirstName}"/>
+						</div>
+	                </div> 
+                    <div class="slds-col slds-large-size_1-of-2 slds-small-size_1-of-1">
+	                    <div class="slds-text-align_left slds-m-around_small">
+	                    	Last Name: <ui:outputText value="{!v.leadDetails.Owner.LastName}"/>
+						</div>
+	                </div>
+                    <div class="slds-col slds-large-size_1-of-2 slds-small-size_1-of-1">
+	                    <div class="slds-text-align_left slds-m-around_small">
+	                    	Email Address: <ui:outputText value="{!v.leadDetails.Owner.Email}"/>
+						</div>
+	                </div>
+                </div>
+            </div>
+        </div>
+    
+    <div id="calendar"></div>
+	<aura:if isTrue="{!v.openEvent}">
+        <div class="demo-only" style="height: 640px;">
+          <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+              <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick="{!c.closePopup}">
+                  X
+                  <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create Appoinment</h2>
+              </header>
+              <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <div class="slds-box slds-grid slds-wrap" style="background-color:white; border-color: white;">
+                    <div class="slds-box" style="width: 100%;">
+
+                    <div class="-slds-size--2-of-1">
+                        <div class="slds-form-element -slds-size--2-of-1 slds-m-around_small">	        
+                            <!--label class="slds-form-element__label" for="amt">Start Time</label>  
+                            <ui:outputText aura:id="amt" class="slds-input" value="{!v.startTime}"/--> 
+                            <lightning:select name="picklistSelect" label="Start Time" value="{!v.startTime}">
+                                <option value="6:0">6:0</option>
+                                <option value="7:0">7:0</option>
+                                <option value="8:0">8:0</option>
+                                <option value="9:0">9:0</option>
+                                <option value="10:0">10:0</option>
+                                <option value="11:0">11:0</option>
+                                <option value="12:0">12:0</option>
+                                <option value="13:0">13:0</option>
+                                <option value="14:0">14:0</option>
+                                <option value="15:0">15:0</option>
+                                <option value="16:0">16:0</option>
+                                <option value="17:0">17:0</option>
+                                <option value="18:0">18:0</option>
+                                <option value="19:0">19:0</option>
+                            </lightning:select>
+                        </div> 
+                        <div class="slds-form-element -slds-size--2-of-1 slds-m-around_small">	        
+                            <!--label class="slds-form-element__label" for="amt">End Time</label>  
+                            <ui:outputText aura:id="amt" class="slds-input" value="{!v.endTime}"/-->
+                            <lightning:select name="picklistSelect" label="End Time" value="{!v.endTime}">
+                                <option value="6:0">6:0</option>                                
+                                <option value="7:0">7:0</option>
+                                <option value="8:0">8:0</option>
+                                <option value="9:0">9:0</option>
+                                <option value="10:0">10:0</option>
+                                <option value="11:0">11:0</option>
+                                <option value="12:0">12:0</option>
+                                <option value="13:0">13:0</option>
+                                <option value="14:0">14:0</option>
+                                <option value="15:0">15:0</option>
+                                <option value="16:0">16:0</option>
+                                <option value="17:0">17:0</option>
+                                <option value="18:0">18:0</option>
+                                <option value="19:0">19:0</option>
+                                <option value="20:0">20:0</option>
+                            </lightning:select>
+                        </div>
+                        <div class="slds-form-element -slds-size--2-of-1 slds-m-around_small">	        
+                            <label class="slds-form-element__label" for="amt">Appoinment Date</label>  
+                            <ui:outputText aura:id="amt" class="slds-input" value="{!v.eventDate}"/>                                
+                        </div>
+                        
+                        <div class="slds-form-element -slds-size--2-of-2 slds-m-around_small">
+                            <label class="slds-form-element__label" for="paymentMethod">Subject</label> 	 	         
+                            <ui:inputText aura:id="CCnumberinp" required="true" placeholder="Appointment" class="slds-input" value="{!v.appoinment.Subject}"/>
+                        </div>
+                        
+                    </div>	   
+                    </div>
+               </div>
+              </div>
+              <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" onclick="{!c.closePopup}">Cancel</button>
+                <button class="slds-button slds-button_brand" onclick="{!c.checkAvailablityCall}">Save</button>
+              </footer>
+            </div>
+          </section>
+          <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </aura:if>
+        <aura:if isTrue="{!v.confirmation}">
+        <div class="demo-only" style="height: 640px;">
+          <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+              <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick="{!c.closePopup}">
+                  X
+                  <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create Appoinment</h2>
+              </header>
+              <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <div class="slds-box slds-grid slds-wrap" style="background-color:white; border-color: white;">
+                   <ui:outputText value="You have another appoinment conflicting this slot. You still wants to proceed?"/>
+               </div>
+              </div>
+              <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" onclick="{!c.closeConflict}">No</button>
+                <button class="slds-button slds-button_brand" onclick="{!c.saveAction}">Yes</button>
+              </footer>
+            </div>
+          </section>
+          <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </aura:if>
+        </div>
+</aura:component>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Fulfillment</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Fulfillments</value>
+    </caseValues>
+    <fields>
+        <label><!-- Address --></label>
+        <name>Address__c</name>
+    </fields>
+    <fields>
+        <label><!-- AdventurePackageId --></label>
+        <name>AdventurePackageId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Adventure Package Cost --></label>
+        <name>Adventure_Package_Cost__c</name>
+    </fields>
+    <fields>
+        <label><!-- Adventure --></label>
+        <name>Adventure__c</name>
+        <relationshipLabel><!-- Fulfillments --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Deposit --></label>
+        <name>Deposit__c</name>
+    </fields>
+    <fields>
+        <label><!-- Dietary Restrictions --></label>
+        <name>Dietary_Restrictions__c</name>
+        <picklistValues>
+            <masterLabel>Allergy (specify in special needs)</masterLabel>
+            <translation><!-- Allergy (specify in special needs) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Diabetic</masterLabel>
+            <translation><!-- Diabetic --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Gluten Free</masterLabel>
+            <translation><!-- Gluten Free --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Kosher</masterLabel>
+            <translation><!-- Kosher --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>No Peanuts</masterLabel>
+            <translation><!-- No Peanuts --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>No Shellfish</masterLabel>
+            <translation><!-- No Shellfish --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pescatarian</masterLabel>
+            <translation><!-- Pescatarian --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Vegan</masterLabel>
+            <translation><!-- Vegan --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Vegetarian</masterLabel>
+            <translation><!-- Vegetarian --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Email --></label>
+        <name>Email__c</name>
+    </fields>
+    <fields>
+        <label><!-- Expedition Leader --></label>
+        <name>Expedition_Leader__c</name>
+        <relationshipLabel><!-- Fulfillments (Expedition Leader) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Explorer --></label>
+        <name>Explorer__c</name>
+        <relationshipLabel><!-- Fulfillments --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Home Phone --></label>
+        <name>Home_Phone__c</name>
+    </fields>
+    <fields>
+        <label><!-- Is Exempt --></label>
+        <name>Is_Exempt__c</name>
+    </fields>
+    <fields>
+        <label><!-- Lead Marketer --></label>
+        <name>Lead_Marketer__c</name>
+        <relationshipLabel><!-- Fulfillments --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Mobile --></label>
+        <name>Mobile__c</name>
+    </fields>
+    <fields>
+        <label><!-- Opportunity --></label>
+        <name>Opportunity__c</name>
+        <relationshipLabel><!-- Fulfillments --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Preferred form of Contact --></label>
+        <name>Preferred_form_of_Contact__c</name>
+        <picklistValues>
+            <masterLabel>Email</masterLabel>
+            <translation><!-- Email --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Mail</masterLabel>
+            <translation><!-- Mail --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Mobile Call</masterLabel>
+            <translation><!-- Mobile Call --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Phone Call</masterLabel>
+            <translation><!-- Phone Call --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Text</masterLabel>
+            <translation><!-- Text --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Schedule Date --></label>
+        <name>Schedule_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Special Needs --></label>
+        <name>Special_Needs__c</name>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Cancelled</masterLabel>
+            <translation><!-- Cancelled --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Closed</masterLabel>
+            <translation><!-- Closed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>New</masterLabel>
+            <translation><!-- New --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Paid Deposit</masterLabel>
+            <translation><!-- Paid Deposit --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Paid in Full</masterLabel>
+            <translation><!-- Paid in Full --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Scheduled</masterLabel>
+            <translation><!-- Scheduled --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Submitted Waiver --></label>
+        <name>Submitted_Waiver__c</name>
+    </fields>
+    <layouts>
+        <layout>Fulfillment Layout</layout>
+        <sections>
+            <label><!-- Administration Details --></label>
+            <section>Administration Details</section>
+        </sections>
+        <sections>
+            <label><!-- Adventure Details --></label>
+            <section>Adventure Details</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

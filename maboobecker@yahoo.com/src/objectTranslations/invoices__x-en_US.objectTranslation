@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>invoices</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>invoices</value>
+    </caseValues>
+    <fields>
+        <label><!-- billAmount --></label>
+        <name>billAmount__c</name>
+    </fields>
+    <fields>
+        <label><!-- billDate --></label>
+        <name>billDate__c</name>
+    </fields>
+    <fields>
+        <label><!-- id --></label>
+        <name>id__c</name>
+    </fields>
+    <fields>
+        <label><!-- invoiceId --></label>
+        <name>invoiceId__c</name>
+    </fields>
+    <fields>
+        <label><!-- ExternalID --></label>
+        <name>projectRef__c</name>
+        <relationshipLabel><!-- invoices --></relationshipLabel>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

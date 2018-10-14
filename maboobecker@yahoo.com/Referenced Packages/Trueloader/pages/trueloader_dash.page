@@ -1,0 +1,120 @@
+<apex:page controller="trueloader.TrueLoaderDash"  >
+
+    <style type="text/css">        
+        
+        .logo_activate {
+            position:relative;
+            left:36%;
+            top:50px;
+            width: 112px;
+            height: 70px;
+            background: url({!$Resource.logo_transit}) 0 0;   
+            background-position-x : 0px;
+            background-repeat:no-repeat;
+            display:block;  
+               
+        }     
+        
+        .logo_activate:active {            
+            top:51px;    
+        }           
+        
+        .logo_trans {
+            position:relative;
+            left:36%;
+            top:50px;
+            width: 112px;
+            height: 70px;
+            background: url({!$Resource.logo_transit}) 0 0;   
+            background-position-x : -113px;
+            background-repeat:no-repeat;
+            display:block;  
+               
+        }
+        .logo_trans:hover  {
+            background-position-x : 0px;
+        }   
+        .logo_trans:active {            
+            top:51px;    
+        }     
+        .info1 {
+            position:relative;
+            left:34%;
+            top:65px;  
+            font-weight: bold;             
+        }      
+        
+        /*Settings*/
+        .dropbtn {
+            background: url({!$Resource.settings});   
+            background-repeat:no-repeat;
+            background-size:32px auto;
+            display:block;  
+            border:0;
+            height:32px;
+            width:32px;
+            cursor: pointer;
+        }
+        .dropbtn:hover, .dropbtn:focus {
+            background-position:0px 0px;
+        }
+        .settings {
+            position: relative;
+            display: inline-block;
+            float:right;
+        }
+        .settings-content {
+            display: none;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            left:-130px;
+            position:absolute;
+        }
+        .settings-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .settings-content a:hover {background-color: #f1f1f1}
+        .show {display:block;}        
+        
+        
+          
+    </style>
+
+<div class="settings" rendered="{!showGoTo}">
+<span aria-hidden="true" data-icon="&#xe002;"></span>
+  <button onclick="shwSettings()" class="dropbtn"></button>
+  <div id="settingsPan" class="settings-content">
+    <a href="https://app.trueloader.com/reLink@DealAuth" target="_blank" onclick="return confirm('Please confirm to Relink Account')" >Relink Account</a>
+  </div>
+</div>
+    
+<apex:outputPanel id="tlPAN" layout="block">
+    <apex:outputLink value="https://app.trueloader.com/doOAuth@SFAuth?mode=1" id="acnLink" styleClass="logo_trans" rendered="{!showACN}" target="_blank" onclick="this.style.display='none'; return true;"></apex:outputLink>
+    <apex:outputLink value="https://app.trueloader.com/enterTL@DealAuth?org_id={!orgID}&uid={!userID}" id="gotoLINK"  styleClass="logo_activate" rendered="{!showGoTo}" target="_blank"></apex:outputLink>
+    <apex:outputPanel styleClass="info1" rendered="{!showGoTo}">Click Icon Above to enter Trueloader</apex:outputPanel>  
+</apex:outputPanel>   
+
+<script language="javascript">
+function shwSettings() {
+    document.getElementById("settingsPan").classList.toggle("show");
+}
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("settings-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script> 
+</apex:page>
