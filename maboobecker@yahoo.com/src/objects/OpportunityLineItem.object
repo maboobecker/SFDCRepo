@@ -41,7 +41,71 @@
         <fullName>Discount</fullName>
     </fields>
     <fields>
+        <fullName>Explorer__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Explorer</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Adventure Package</relationshipLabel>
+        <relationshipName>Adventure_Package</relationshipName>
+        <required>true</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>FulfillmentId__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <externalId>false</externalId>
+        <label>FulfillmentId</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Fulfillment_Created__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Fulfillment Created</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Fulfillment_State__c</fullName>
+        <externalId>false</externalId>
+        <label>Fulfillment State</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Created</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Not Created</fullName>
+                    <default>true</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>ListPrice</fullName>
+    </fields>
+    <fields>
+        <fullName>Needs_Insurance__c</fullName>
+        <externalId>false</externalId>
+        <formula>PricebookEntry.Product2.Needs_Insurance__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Needs Insurance</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Needs_Waiver__c</fullName>
+        <externalId>false</externalId>
+        <formula>PricebookEntry.Product2.Needs_Waiver__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Needs Waiver</label>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>OpportunityId</fullName>

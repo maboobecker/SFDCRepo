@@ -57,6 +57,7 @@ Execution of a test case under a particular scenario, i.e., targeted release, bu
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
         <fullName>Assignee__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>

@@ -1,3 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Workflow xmlns="http://soap.sforce.com/2006/04/metadata"/>
-
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Account_Type_To_Customer</fullName>
+        <field>Type</field>
+        <literalValue>Customer</literalValue>
+        <name>Account Type To Customer</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Account_Type_To_Pending</fullName>
+        <field>Type</field>
+        <literalValue>Pending</literalValue>
+        <name>Account Type To Pending</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Account_Type_To_Prospect</fullName>
+        <field>Type</field>
+        <literalValue>Prospect</literalValue>
+        <name>Account Type To Prospect</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <outboundMessages>
+        <fullName>Account_ICS</fullName>
+        <apiVersion>41.0</apiVersion>
+        <endpointUrl>https://ORAICSABQSic-ahaservice.uscom-central-1.oraclecloud.com:443/ic/ws/integration/v1/flows/salesforce/ABSFDC_BESFDC/1.0/?wsdl</endpointUrl>
+        <fields>AccountNumber</fields>
+        <fields>Id</fields>
+        <fields>Name</fields>
+        <includeSessionId>false</includeSessionId>
+        <integrationUser>maboobecker@yahoo.com</integrationUser>
+        <name>Account</name>
+        <protected>false</protected>
+        <useDeadLetterQueue>false</useDeadLetterQueue>
+    </outboundMessages>
+    <outboundMessages>
+        <fullName>ICSAccount</fullName>
+        <apiVersion>41.0</apiVersion>
+        <endpointUrl>https://ORAICSABQSic-ahaservice.uscom-central-1.oraclecloud.com:443/ic/ws/integration/v1/flows/salesforce/ABSFDC_BESFDC/1.0/</endpointUrl>
+        <fields>AccountNumber</fields>
+        <fields>Description</fields>
+        <fields>Id</fields>
+        <fields>Name</fields>
+        <includeSessionId>true</includeSessionId>
+        <integrationUser>maboobecker@yahoo.com</integrationUser>
+        <name>ICSAccount</name>
+        <protected>false</protected>
+        <useDeadLetterQueue>false</useDeadLetterQueue>
+    </outboundMessages>
+    <rules>
+        <fullName>ICSAccount</fullName>
+        <actions>
+            <name>ICSAccount</name>
+            <type>OutboundMessage</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Account.Active__c</field>
+            <operation>equals</operation>
+            <value>Yes</value>
+        </criteriaItems>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>New Account to ICS</fullName>
+        <active>true</active>
+        <criteriaItems>
+            <field>Account.Name</field>
+            <operation>equals</operation>
+            <value>TESTICS</value>
+        </criteriaItems>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+</Workflow>

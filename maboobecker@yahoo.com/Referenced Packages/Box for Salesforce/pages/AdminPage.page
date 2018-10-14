@@ -8,10 +8,7 @@ Description: This page contains all the functionality of Admin Console; Used fro
 
     <apex:pageMessages />
     <style>
-            .adminStyle
-            {
-                background-color: FF9933 !important;
-            }
+            
             div.tooltip {
                 width: 265px;
                 float: left;
@@ -34,8 +31,8 @@ Description: This page contains all the functionality of Admin Console; Used fro
                 color: #000000;
             }
     </style>
-    <apex:form id="consoleFrm">
-        <apex:pageBlock id="adminPB" rendered="{!isAdmin}" title="{!$Label.box__box} {!$Label.box__admin} {!$Label.box__settings}" tabStyle="Lead">
+    <apex:form id="consoleFrm" styleClass="adminStyle">
+        <apex:pageBlock id="adminPB" rendered="{!isAdmin}" title="{!$Label.box__box} {!$Label.box__admin} {!$Label.box__settings}">
             <div class="tooltip" style="display:inline">
             <b>{!$Label.Box} {!$Label.Service} {!$Label.Account}:</b>&nbsp;&nbsp;
                 <span>
@@ -68,16 +65,12 @@ Description: This page contains all the functionality of Admin Console; Used fro
             
         </apex:pageBlock>
         
-        <apex:pageBlock id="contentPB" rendered="{!(isAdmin && HasBoxAdminCredential)}" title="{!$Label.box__content_settings}" tabStyle="Lead">
+        <apex:pageBlock id="contentPB" rendered="{!(isAdmin && HasBoxAdminCredential)}" title="{!$Label.box__content_settings}">
                 
             <apex:outputText >{!$Label.box__current} {!$Label.box__root} {!$Label.box__folder} :</apex:outputText> &nbsp;&nbsp;
                 <apex:outputPanel id="rootFldrOut">
                     <apex:outputPanel id="displayRoot" rendered="{!showSecondFolderNameTB}">
                         <b>{!rootFolderName}</b> &nbsp;&nbsp;&nbsp;&nbsp;
-                        <!-- <apex:commandlink action="{!ChangeRootFolder}" value="{!$Label.Rename}" rerender="rootFldrOut">
-                            <apex:param name="isRenameClicked1" value="True" assignTo="{!showFirstFolderNameTB}"/>
-                            <apex:param name="isRenameClicked2" value="False" assignTo="{!showSecondFolderNameTB}"/>
-                        </apex:commandlink> -->
                     </apex:outputPanel>
                     
                     <apex:outputPanel id="editRoot" rendered="{!showFirstFolderNameTB}">
@@ -100,7 +93,7 @@ Description: This page contains all the functionality of Admin Console; Used fro
             <apex:inputText value="{!subdomain}"/>
         </apex:pageBlock>
         
-        <apex:pageBlock id="syncPB" rendered="{!(isAdmin && HasBoxAdminCredential)}" title="{!$Label.box__sync_systems}" tabStyle="Lead">
+        <apex:pageBlock id="syncPB" rendered="{!(isAdmin && HasBoxAdminCredential)}" title="{!$Label.box__sync_systems}">
             <apex:outputText >{!$Label.box__sync_access}:</apex:outputText> &nbsp;&nbsp;
             <apex:commandButton value="Sync Now" action="{!ScheduleNow}" rerender="sch" status="ScheduleStartStatus"/> <br/>
             
@@ -114,7 +107,7 @@ Description: This page contains all the functionality of Admin Console; Used fro
             <apex:commandButton value="{!$Label.box__schedule_updates}" onclick="window.open('{!jobSecheduleUrl}')"/>
         </apex:pageBlock>
         
-        <apex:pageBlock title="{!$Label.box__enable} {!$Label.box__seamless_login} (Org-Wide)" rendered="{!(isAdmin && HasBoxAdminCredential)}" tabStyle="Lead">
+        <apex:pageBlock title="{!$Label.box__enable} {!$Label.box__seamless_login} (Org-Wide)" rendered="{!(isAdmin && HasBoxAdminCredential)}">
 
             <apex:outputLabel value="{!$Label.box__seamless_login}:" for="seamlessOpt"/> 
             <apex:selectradio id="seamlessOpt" value="{!selectSeamlessAdmin}" label="{!$Label.box__seamless_login}:">
@@ -125,7 +118,7 @@ Description: This page contains all the functionality of Admin Console; Used fro
         
         <apex:variable var="usrRecExists" value="{!(currentUser != null && currentUser.box__AccessToken__c != null && currentUser.box__AccessToken__c != '')}" />
         
-        <apex:pageBlock id="usrAccount" tabStyle="Account" title="{!$Label.box__box} {!$Label.box__user} {!$Label.box__settings}">
+        <apex:pageBlock id="usrAccount" title="{!$Label.box__box} {!$Label.box__user} {!$Label.box__settings}">
             <h2>
                 <apex:outputLabel value="{!$Label.box__connect_with_box}"/> <br/>
             </h2>
@@ -139,23 +132,17 @@ Description: This page contains all the functionality of Admin Console; Used fro
             <apex:commandLink rendered="{!usrRecExists == false}" action="{!connectToBox}" value="{!$Label.box__begin_phrase} {!$Label.box__company} {!$Label.box__box} {!$Label.box__account}."/>
         </apex:pageBlock>
         
-        <apex:pageBlock id="usrCollab" title="Auto-Collab:" tabStyle="Account" rendered="{!usrRecExists == true}">
+        <apex:pageBlock id="usrCollab" title="Auto-Collab:" rendered="{!usrRecExists == true}">
             <apex:selectradio id="autoCollab" value="{!selectAutoCollab}">
                 <apex:selectOptions value="{!AutoCollabValues}"/>
             </apex:selectradio>
         </apex:pageBlock>
          
-        <apex:pageBlock id="usrSeamless" title="Seamless Login:" tabStyle="Account" rendered="{!usrRecExists == true && selectSeamlessAdmin == 'Enabled'}">
+        <apex:pageBlock id="usrSeamless" title="Seamless Login:" rendered="{!usrRecExists == true && selectSeamlessAdmin == 'Enabled'}">
             <apex:selectradio id="seamlessOpt" value="{!selectSeamlessUser}" label="{!$Label.box__seamless_login}:">
                 <apex:selectOptions value="{!SeamlessOptions}"/>
             </apex:selectradio>
         </apex:pageBlock>
-        
-        <!-- <apex:pageBlock id="usrDebugging" title="Hide Folder Path:" tabStyle="Account" rendered="{!usrRecExists == true}">
-            <apex:selectRadio id="debugOpt" value="{!selectEnhancedDebugging}" label="Enable Enhanced Debugging for this User?">
-                <apex:selectOptions value="{!DebugOptions}"/>
-            </apex:selectRadio>
-        </apex:pageBlock> -->
         
         <p align="center">
             <apex:commandButton action="{!SaveSettings}" value="{!$Label.box__save_settings}" rerender="outSaveStatus" status="saveStatus"/>

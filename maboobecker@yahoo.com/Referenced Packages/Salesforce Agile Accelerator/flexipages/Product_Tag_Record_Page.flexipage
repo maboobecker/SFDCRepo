@@ -15,11 +15,11 @@
         <componentInstances>
             <componentInstanceProperties>
                 <name>parentFieldApiName</name>
-                <value>agf__ADM_Product_Tag__c.Id</value>
+                <value>ADM_Product_Tag__c.Id</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>relatedListApiName</name>
-                <value>agf__Additional_Fields__r</value>
+                <value>Additional_Fields__r</value>
             </componentInstanceProperties>
             <componentName>force:relatedListSingleContainer</componentName>
         </componentInstances>

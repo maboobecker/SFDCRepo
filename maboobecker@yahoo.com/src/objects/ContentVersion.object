@@ -50,6 +50,72 @@
         <fullName>Title</fullName>
         <trackHistory>false</trackHistory>
     </fields>
+    <fields>
+        <fullName>bt_stripe__File_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>File Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>bt_stripe__Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Additional File</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Cancellation Policy</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Customer Communication</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Customer Signature</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Duplicate Charge</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Duplicate Charge Documentation</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Receipt</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Refund Policy</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Service Documentation</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Shipping Documentation</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
     <searchLayouts>
         <searchResultsAdditionalFields>VERSION.TITLE</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>VERSION.CONTENT_SIZE</searchResultsAdditionalFields>

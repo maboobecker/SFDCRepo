@@ -17,4 +17,7 @@
     <tab>ADM_Epic__c</tab>
     <tab>ADM_Theme__c</tab>
     <tab>ADM_Work_Status__c</tab>
+    <tab>Property1__c</tab>
+    <tab>Waypoint__c</tab>
+    <tab>Suggestion__c</tab>
 </CustomApplication>

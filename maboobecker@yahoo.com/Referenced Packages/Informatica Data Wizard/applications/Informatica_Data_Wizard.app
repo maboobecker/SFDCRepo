@@ -6,4 +6,7 @@
     <logo>Shared_Folder/Informatica_Logo.png</logo>
     <tab>ICS_Data_Wizard</tab>
     <tab>Course__c</tab>
+    <tab>Property1__c</tab>
+    <tab>Waypoint__c</tab>
+    <tab>Suggestion__c</tab>
 </CustomApplication>

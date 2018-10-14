@@ -45,6 +45,10 @@
         <description>Process for logging sales data for B2B opportunities</description>
         <isActive>true</isActive>
         <values>
+            <fullName>Closed Won</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Needs Analysis</fullName>
             <default>false</default>
         </values>
@@ -57,9 +61,64 @@
             <default>false</default>
         </values>
     </businessProcesses>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <businessProcesses>
+        <fullName>Individual Opportunity</fullName>
+        <isActive>true</isActive>
+        <values>
+            <fullName>Closed Lost</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed Won</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Id%2E Decision Makers</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Needs Analysis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Negotiation%2FReview</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perception Analysis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Proposal%2FPrice Quote</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prospecting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Qualification</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Value Proposition</fullName>
+            <default>false</default>
+        </values>
+    </businessProcesses>
+    <compactLayoutAssignment>New_Oppty_Compact_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>New_Oppty_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>Probability</fields>
+        <fields>CloseDate</fields>
+        <fields>StageName</fields>
+        <fields>Amount</fields>
+        <fields>OwnerId</fields>
+        <label>New Oppty Compact Layout</label>
+    </compactLayouts>
     <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
+    <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
         <fullName>AccountId</fullName>
         <trackFeedHistory>false</trackFeedHistory>
@@ -67,9 +126,28 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Adventure_Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>Adventure Cost</label>
+        <summarizedField>OpportunityLineItem.UnitPrice</summarizedField>
+        <summaryForeignKey>OpportunityLineItem.OpportunityId</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Amount</fullName>
         <trackFeedHistory>true</trackFeedHistory>
         <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>Application_Submitted__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Application Submitted</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>CampaignId</fullName>
@@ -89,6 +167,19 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Country__c</fullName>
+        <externalId>false</externalId>
+        <label>Country</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Country</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>CurrentGenerators__c</fullName>
         <externalId>false</externalId>
         <label>Current Generator(s)</label>
@@ -98,6 +189,33 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DB_Competitor__c</fullName>
+        <description>This is a field that is installed by and used with the Adoption Dashboard AppExchange package. If your org already has a similar field, you can change the reports that are part of the Adoption Dashboard package to use your custom field and can delete this field.</description>
+        <externalId>false</externalId>
+        <label>DB Competitor</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Competitor A</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Competitor B</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Competitor C</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>DeliveryInstallationStatus__c</fullName>
@@ -131,7 +249,22 @@
         <trackTrending>false</trackTrending>
     </fields>
     <fields>
+        <fullName>Discount__c</fullName>
+        <externalId>false</externalId>
+        <label>Discount</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
         <fullName>ExpectedRevenue</fullName>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>IqScore</fullName>
         <trackTrending>false</trackTrending>
     </fields>
     <fields>
@@ -162,6 +295,24 @@
         <trackTrending>false</trackTrending>
     </fields>
     <fields>
+        <fullName>Needs_Insurance__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Needs Insurance</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Needs_Waiver__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Needs Waiver</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>NextStep</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -184,6 +335,11 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>PartnerAccountId</fullName>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Pricebook2Id</fullName>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -192,6 +348,17 @@
         <fullName>Probability</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>Promo_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Promo Code</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>StageName</fullName>
@@ -273,6 +440,27 @@
         <label>Opportunity Pipeline</label>
     </listViews>
     <listViews>
+        <fullName>High_Probability_Opportunities</fullName>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>OPPORTUNITY.CLOSE_DATE</columns>
+        <columns>OPPORTUNITY.AMOUNT</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>equals</operation>
+            <value>Proposal/Price Quote,Negotiation/Review</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.PROBABILITY</field>
+            <operation>greaterOrEqual</operation>
+            <value>50</value>
+        </filters>
+        <label>High Probability Opportunities</label>
+    </listViews>
+    <listViews>
         <fullName>MyOpportunities</fullName>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>OPPORTUNITY.AMOUNT</columns>
@@ -343,6 +531,21 @@
         <businessProcess>B2B Sales Process</businessProcess>
         <description>Use to log B2B opportunities</description>
         <label>B2B Prospecting</label>
+        <picklistValues>
+            <picklist>DB_Competitor__c</picklist>
+            <values>
+                <fullName>Competitor A</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Competitor B</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Competitor C</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>DeliveryInstallationStatus__c</picklist>
             <values>

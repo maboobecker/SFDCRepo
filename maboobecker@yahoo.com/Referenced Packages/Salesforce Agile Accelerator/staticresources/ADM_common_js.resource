@@ -524,7 +524,7 @@ function addInvestigationQuestions(id) {
         var el = document.getElementById(id);
         if(el != null) {
             if(el.value == null || el.value.length == 0 || el.value == 'Write something...' || el.value == 'Say something about this file...' || el.value == 'Say something about this link...' || el.value == 'What would you like to ask?') {
-                el.value = 'Response Requested – \'Example: Bug with work ID, Bug with work ID to follow, explanation for working as designed.\'\n\n';
+                el.value = 'Response Requested – \'Example: Bug with work ID, Bug with work ID to follow, explanation for working as documented.\'\n\n';
                 el.value += 'Describe urgency from the customer\'s perspective –\n\n';
                 el.value += 'Number of users impacted –\n\n';
             } else {

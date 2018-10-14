@@ -39,12 +39,144 @@
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <enableFeeds>false</enableFeeds>
     <fields>
+        <fullName>Adventure_Rating__c</fullName>
+        <externalId>false</externalId>
+        <label>Adventure Rating</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>(1) Easy Rider</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>(2) Moderate Challenge</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>(3) Thrill-Seeker</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>(4) Code Habanero Alert</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>(5) Adrenaline Junkie</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Boat_Dive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Boat Dive</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Canyoneering__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Canyoneering</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>City__c</fullName>
+        <externalId>false</externalId>
+        <label>City</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Country__c</fullName>
+        <externalId>false</externalId>
+        <label>Country</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Current_Inventory__c</fullName>
+        <externalId>false</externalId>
+        <label>Current Inventory</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Day_Trip__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Day Trip</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Description</fullName>
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
         <fullName>DisplayUrl</fullName>
         <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Duration_Days__c</fullName>
+        <externalId>false</externalId>
+        <label>Duration (Days)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Duration_Nights__c</fullName>
+        <externalId>false</externalId>
+        <label>Duration (Nights)</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expedition_Leader__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Expedition Leader</label>
+        <referenceTo>User</referenceTo>
+        <relationshipLabel>Adventures (Expedition Leader)</relationshipLabel>
+        <relationshipName>Adventures1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>ExternalDataSourceId</fullName>
@@ -61,12 +193,190 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Gear_Rental_Available__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Gear Rental Available</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>IsActive</fullName>
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
+        <fullName>Lead_Marketer__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Lead Marketer</label>
+        <referenceTo>User</referenceTo>
+        <relationshipLabel>Adventures</relationshipLabel>
+        <relationshipName>Adventures</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Lifespan_Months__c</fullName>
+        <externalId>false</externalId>
+        <label>Lifespan Months</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>List_Price__c</fullName>
+        <externalId>false</externalId>
+        <label>List Price</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Maintenance_Cycle__c</fullName>
+        <description>Number of days required before routine maintenance is needed</description>
+        <externalId>false</externalId>
+        <label>Maintenance Cycle (Days)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Max_Participants__c</fullName>
+        <externalId>false</externalId>
+        <label>Max Participants</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Min_Cert_Needed__c</fullName>
+        <externalId>false</externalId>
+        <label>Min Cert Needed</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Open Water</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Adventure</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Advanced Open Water</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Rescue</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Master</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Minimum_Age__c</fullName>
+        <externalId>false</externalId>
+        <label>Minimum Age</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>All Ages Welcome</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>7+</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>12+</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>16+</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>18+</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Name</fullName>
         <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Needs_Insurance__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Needs Insurance</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Needs_Lead_Certification__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Needs Lead Certification</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Needs_Waiver__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Needs Waiver</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Overnight__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Overnight</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Permits_Needed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Permits Needed</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Porters__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Porters</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>ProductCode</fullName>
@@ -78,8 +388,174 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Replacement_Part__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Replacement Part</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Route_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Route Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Top Rope</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Sport Climbing</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Trad Climbing</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Bouldering</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Multi-Pitch Climb</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Psicobloc</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Season__c</fullName>
+        <externalId>false</externalId>
+        <label>Season</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Spring</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Summer</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Fall</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Winter</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Shore_Dive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Shore Dive</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Special_Crew_Requests__c</fullName>
+        <externalId>false</externalId>
+        <label>Special Crew Requests</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>State__c</fullName>
+        <externalId>false</externalId>
+        <label>State</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>StockKeepingUnit</fullName>
         <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Street__c</fullName>
+        <externalId>false</externalId>
+        <label>Street</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Types_Accepted__c</fullName>
+        <externalId>false</externalId>
+        <label>Types Accepted</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>PADI</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>NAUI</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>SSI</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Discover</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Warehouse_SKU__c</fullName>
+        <externalId>true</externalId>
+        <label>Warehouse SKU</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zip__c</fullName>
+        <externalId>false</externalId>
+        <label>Zip</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <listViews>
         <fullName>AllProducts</fullName>
@@ -103,4 +579,5 @@
         <searchResultsAdditionalFields>PRODUCT2.DESCRIPTION</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>PRODUCT2.FAMILY</searchResultsAdditionalFields>
     </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

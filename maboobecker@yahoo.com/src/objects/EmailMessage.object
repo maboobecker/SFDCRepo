@@ -33,6 +33,9 @@
         <fullName>CcAddress</fullName>
     </fields>
     <fields>
+        <fullName>FirstOpenedDate</fullName>
+    </fields>
+    <fields>
         <fullName>FromAddress</fullName>
     </fields>
     <fields>
@@ -52,6 +55,12 @@
     </fields>
     <fields>
         <fullName>IsExternallyVisible</fullName>
+    </fields>
+    <fields>
+        <fullName>IsPrivateDraft</fullName>
+    </fields>
+    <fields>
+        <fullName>LastOpenedDate</fullName>
     </fields>
     <fields>
         <fullName>MessageDate</fullName>
@@ -82,4 +91,25 @@
     <fields>
         <fullName>ValidatedFromAddress</fullName>
     </fields>
+    <searchLayouts>
+        <customTabListAdditionalFields>Status</customTabListAdditionalFields>
+        <customTabListAdditionalFields>HasAttachment</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Address</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Subject</customTabListAdditionalFields>
+        <customTabListAdditionalFields>MessageDate</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Status</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>HasAttachment</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Address</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Subject</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>MessageDate</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Status</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>HasAttachment</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Address</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Subject</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>MessageDate</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>FromName</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>ToAddress</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Subject</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>MessageDate</searchResultsAdditionalFields>
+    </searchLayouts>
 </CustomObject>

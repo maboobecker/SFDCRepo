@@ -9777,6 +9777,10 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>ADM_CreateSprintOverview</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>ADM_DeepCloneRedirector</apexPage>
         <enabled>true</enabled>
     </pageAccesses>

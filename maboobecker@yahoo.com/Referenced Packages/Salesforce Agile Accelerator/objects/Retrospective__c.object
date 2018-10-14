@@ -60,6 +60,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
     <fields>
         <fullName>Is_Current_User_the_manager__c</fullName>
         <deprecated>false</deprecated>
